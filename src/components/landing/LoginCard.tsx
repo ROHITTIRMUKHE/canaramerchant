@@ -155,7 +155,7 @@ export default function LoginCard() {
                 <Input
                   type="tel"
                   placeholder="Enter 10-digit number"
-                  className="pl-20 h-12 bg-secondary border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+                  className="pl-20 h-12 bg-secondary border-border text-foreground text-lg font-medium placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
                   maxLength={10}
                   value={mobileNumber}
                   onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
@@ -179,7 +179,7 @@ export default function LoginCard() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter password"
-                      className="pl-12 pr-12 h-12 bg-secondary border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+                      className="pl-12 pr-12 h-12 bg-secondary border-border text-foreground text-lg font-medium placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
@@ -220,7 +220,7 @@ export default function LoginCard() {
                             key={i}
                             type="text"
                             maxLength={1}
-                            className="w-12 h-12 text-center text-lg font-bold bg-secondary border-border text-foreground focus:border-primary focus:ring-primary/20"
+                            className="w-12 h-12 text-center text-xl font-bold bg-secondary border-border text-foreground focus:border-primary focus:ring-primary/20"
                             value={otp[i] || ''}
                             onChange={(e) => {
                               const val = e.target.value.replace(/\D/g, '');
