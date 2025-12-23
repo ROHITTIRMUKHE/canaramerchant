@@ -1,32 +1,39 @@
 import { motion } from 'framer-motion';
+import { useMouseParallax } from '@/hooks/useMouseParallax';
+import { useScrollProgress } from '@/hooks/useScrollProgress';
 
 export default function FloatingElements() {
+  const { normalizedX, normalizedY } = useMouseParallax();
+  const { scrollY } = useScrollProgress();
+
+  const coins = [
+    { x: '15%', y: '20%', size: 50, delay: 0, parallaxFactor: 0.8 },
+    { x: '75%', y: '15%', size: 40, delay: 0.5, parallaxFactor: 1.2 },
+    { x: '85%', y: '60%', size: 35, delay: 1, parallaxFactor: 0.6 },
+    { x: '10%', y: '70%', size: 45, delay: 1.5, parallaxFactor: 1 },
+    { x: '60%', y: '80%', size: 30, delay: 2, parallaxFactor: 0.9 },
+  ];
+
   return (
     <>
-      {/* Floating rupee coins */}
-      {[
-        { x: '15%', y: '20%', size: 50, delay: 0 },
-        { x: '75%', y: '15%', size: 40, delay: 0.5 },
-        { x: '85%', y: '60%', size: 35, delay: 1 },
-        { x: '10%', y: '70%', size: 45, delay: 1.5 },
-        { x: '60%', y: '80%', size: 30, delay: 2 },
-      ].map((coin, i) => (
+      {/* Floating rupee coins with cursor and scroll parallax */}
+      {coins.map((coin, i) => (
         <motion.div
           key={i}
-          className="absolute pointer-events-none"
+          className="fixed pointer-events-none z-10"
           style={{ left: coin.x, top: coin.y }}
-          initial={{ opacity: 0, scale: 0 }}
           animate={{ 
+            x: normalizedX * 30 * coin.parallaxFactor,
+            y: normalizedY * 30 * coin.parallaxFactor - scrollY * 0.1 * coin.parallaxFactor,
             opacity: [0.3, 0.6, 0.3],
             scale: 1,
-            y: [0, -20, 0],
             rotateY: [0, 180, 360]
           }}
           transition={{ 
-            duration: 4,
-            delay: coin.delay,
-            repeat: Infinity,
-            ease: 'easeInOut'
+            x: { duration: 0.3, ease: 'easeOut' },
+            y: { duration: 0.3, ease: 'easeOut' },
+            opacity: { duration: 4, delay: coin.delay, repeat: Infinity, ease: 'easeInOut' },
+            rotateY: { duration: 4, delay: coin.delay, repeat: Infinity, ease: 'easeInOut' }
           }}
         >
           <div 
@@ -34,10 +41,10 @@ export default function FloatingElements() {
             style={{
               width: coin.size,
               height: coin.size,
-              background: 'linear-gradient(135deg, hsl(45, 90%, 55%) 0%, hsl(35, 95%, 45%) 100%)',
-              color: 'hsl(220, 45%, 12%)',
+              background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%)',
+              color: 'hsl(var(--primary-foreground))',
               fontSize: coin.size * 0.4,
-              boxShadow: '0 4px 20px hsla(45, 90%, 50%, 0.3)'
+              boxShadow: '0 4px 20px hsl(var(--primary) / 0.3)'
             }}
           >
             ₹
@@ -45,35 +52,45 @@ export default function FloatingElements() {
         </motion.div>
       ))}
 
-      {/* Floating UPI badges */}
+      {/* Floating UPI badges with parallax */}
       <motion.div
-        className="absolute left-[5%] top-[40%] pointer-events-none"
+        className="fixed left-[5%] top-[40%] pointer-events-none z-10"
         animate={{ 
-          y: [0, -15, 0],
+          x: normalizedX * 20,
+          y: normalizedY * 20 - scrollY * 0.05,
           rotate: [-5, 5, -5]
         }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ 
+          x: { duration: 0.3, ease: 'easeOut' },
+          y: { duration: 0.3, ease: 'easeOut' },
+          rotate: { duration: 5, repeat: Infinity, ease: 'easeInOut' }
+        }}
       >
-        <div className="px-4 py-2 bg-[hsl(220,30%,15%)]/80 backdrop-blur-sm rounded-full border border-[hsl(220,30%,25%)] text-xs text-[hsl(0,0%,100%)]">
-          <span className="text-[hsl(145,65%,50%)]">●</span> UPI Active
+        <div className="px-4 py-2 bg-secondary/80 backdrop-blur-sm rounded-full border border-border text-xs text-foreground">
+          <span className="text-chart-4">●</span> UPI Active
         </div>
       </motion.div>
 
       <motion.div
-        className="absolute right-[8%] top-[35%] pointer-events-none"
+        className="fixed right-[8%] top-[35%] pointer-events-none z-10"
         animate={{ 
-          y: [0, 15, 0],
+          x: normalizedX * -25,
+          y: normalizedY * 25 - scrollY * 0.08,
           rotate: [5, -5, 5]
         }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ 
+          x: { duration: 0.3, ease: 'easeOut' },
+          y: { duration: 0.3, ease: 'easeOut' },
+          rotate: { duration: 6, repeat: Infinity, ease: 'easeInOut' }
+        }}
       >
-        <div className="px-4 py-2 bg-[hsl(220,30%,15%)]/80 backdrop-blur-sm rounded-full border border-[hsl(220,30%,25%)] text-xs text-[hsl(0,0%,100%)]">
-          +₹12,450 <span className="text-[hsl(145,65%,50%)]">received</span>
+        <div className="px-4 py-2 bg-secondary/80 backdrop-blur-sm rounded-full border border-border text-xs text-foreground">
+          +₹12,450 <span className="text-chart-4">received</span>
         </div>
       </motion.div>
 
       {/* Connection lines */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-10" preserveAspectRatio="none">
+      <svg className="fixed inset-0 w-full h-full pointer-events-none opacity-10 z-0" preserveAspectRatio="none">
         <motion.path
           d="M 100 200 Q 300 100 500 200 T 900 200"
           stroke="url(#lineGradient)"
@@ -85,9 +102,9 @@ export default function FloatingElements() {
         />
         <defs>
           <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="hsl(45, 90%, 50%)" stopOpacity="0" />
-            <stop offset="50%" stopColor="hsl(45, 90%, 50%)" stopOpacity="1" />
-            <stop offset="100%" stopColor="hsl(45, 90%, 50%)" stopOpacity="0" />
+            <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+            <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="1" />
+            <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>

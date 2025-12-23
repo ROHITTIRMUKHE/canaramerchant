@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { Smartphone, QrCode, CheckCircle2, ArrowRight, Wallet } from 'lucide-react';
+import { useMouseParallax } from '@/hooks/useMouseParallax';
+import canaraBankLogo from '@/assets/canara-bank-logo.png';
 
 const steps = [
   { icon: Smartphone, label: 'Scan', delay: 0 },
@@ -9,9 +11,10 @@ const steps = [
 ];
 
 export default function PaymentVisualization() {
+  const { normalizedX, normalizedY } = useMouseParallax();
+
   return (
     <div className="relative w-full max-w-2xl mx-auto">
-      {/* Main visualization container */}
       <motion.div 
         className="relative"
         initial={{ opacity: 0 }}
@@ -24,12 +27,15 @@ export default function PaymentVisualization() {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
+          style={{
+            transform: `perspective(1000px) rotateY(${normalizedX * 5}deg) rotateX(${normalizedY * -5}deg)`
+          }}
         >
           {/* Outer glow ring */}
           <motion.div
             className="absolute inset-0 rounded-3xl"
             style={{
-              background: 'conic-gradient(from 0deg, hsla(45, 90%, 50%, 0.3), hsla(220, 70%, 50%, 0.3), hsla(45, 90%, 50%, 0.3))',
+              background: 'conic-gradient(from 0deg, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.3), hsl(var(--primary) / 0.3))',
               filter: 'blur(20px)',
             }}
             animate={{ rotate: 360 }}
@@ -37,7 +43,7 @@ export default function PaymentVisualization() {
           />
           
           {/* QR Card */}
-          <div className="absolute inset-4 bg-gradient-to-br from-[hsl(0,0%,100%)] to-[hsl(220,20%,95%)] rounded-2xl p-4 shadow-2xl">
+          <div className="absolute inset-4 bg-gradient-to-br from-card to-muted rounded-2xl p-4 shadow-2xl">
             {/* QR Pattern */}
             <div className="w-full h-full grid grid-cols-8 gap-1 p-2">
               {Array.from({ length: 64 }).map((_, i) => (
@@ -45,7 +51,7 @@ export default function PaymentVisualization() {
                   key={i}
                   className="rounded-sm"
                   style={{
-                    backgroundColor: (i % 3 === 0 || i % 7 === 0) ? 'hsl(220, 45%, 12%)' : 'transparent'
+                    backgroundColor: (i % 3 === 0 || i % 7 === 0) ? 'hsl(var(--foreground))' : 'transparent'
                   }}
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -61,34 +67,47 @@ export default function PaymentVisualization() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.2, duration: 0.5, type: 'spring' }}
             >
-              <div className="w-16 h-16 bg-gradient-to-br from-[hsl(45,90%,50%)] to-[hsl(35,95%,45%)] rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-[hsl(220,45%,12%)] font-bold text-xl">CB</span>
+              <div className="w-16 h-16 bg-card rounded-xl flex items-center justify-center shadow-lg border border-border">
+                <img 
+                  src={canaraBankLogo} 
+                  alt="Canara Bank" 
+                  className="w-12 h-12 object-contain"
+                />
               </div>
             </motion.div>
           </div>
 
           {/* Scan line animation */}
           <motion.div
-            className="absolute left-4 right-4 h-1 rounded-full bg-gradient-to-r from-transparent via-[hsl(45,90%,50%)] to-transparent"
+            className="absolute left-4 right-4 h-1 rounded-full bg-gradient-to-r from-transparent via-primary to-transparent"
             animate={{ top: ['20%', '80%', '20%'] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           />
         </motion.div>
 
-        {/* Floating phone mockups */}
+        {/* Floating phone mockups with parallax */}
         <motion.div
           className="absolute -left-8 top-1/2 -translate-y-1/2 w-32 h-56"
           initial={{ x: -50, opacity: 0, rotateY: -20 }}
-          animate={{ x: 0, opacity: 1, rotateY: -15 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          animate={{ 
+            x: normalizedX * 15, 
+            y: normalizedY * 15,
+            opacity: 1, 
+            rotateY: -15 + normalizedX * 5
+          }}
+          transition={{ 
+            x: { duration: 0.3, ease: 'easeOut' },
+            y: { duration: 0.3, ease: 'easeOut' },
+            default: { duration: 0.8, delay: 0.5 }
+          }}
         >
-          <div className="w-full h-full bg-gradient-to-br from-[hsl(220,30%,20%)] to-[hsl(220,40%,10%)] rounded-2xl p-2 shadow-2xl border border-[hsl(220,30%,25%)]">
-            <div className="w-full h-full bg-gradient-to-br from-[hsl(220,50%,15%)] to-[hsl(220,50%,8%)] rounded-xl flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-br from-secondary to-muted rounded-2xl p-2 shadow-2xl border border-border">
+            <div className="w-full h-full bg-gradient-to-br from-background to-muted rounded-xl flex items-center justify-center">
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <QrCode className="w-12 h-12 text-[hsl(45,90%,50%)]" />
+                <QrCode className="w-12 h-12 text-primary" />
               </motion.div>
             </div>
           </div>
@@ -98,27 +117,36 @@ export default function PaymentVisualization() {
             animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
-            <div className="w-full h-full rounded-full border-2 border-[hsl(45,90%,50%)]" />
+            <div className="w-full h-full rounded-full border-2 border-primary" />
           </motion.div>
         </motion.div>
 
         <motion.div
           className="absolute -right-8 top-1/2 -translate-y-1/2 w-32 h-56"
           initial={{ x: 50, opacity: 0, rotateY: 20 }}
-          animate={{ x: 0, opacity: 1, rotateY: 15 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
+          animate={{ 
+            x: normalizedX * -15, 
+            y: normalizedY * -15,
+            opacity: 1, 
+            rotateY: 15 + normalizedX * -5
+          }}
+          transition={{ 
+            x: { duration: 0.3, ease: 'easeOut' },
+            y: { duration: 0.3, ease: 'easeOut' },
+            default: { duration: 0.8, delay: 0.7 }
+          }}
         >
-          <div className="w-full h-full bg-gradient-to-br from-[hsl(220,30%,20%)] to-[hsl(220,40%,10%)] rounded-2xl p-2 shadow-2xl border border-[hsl(220,30%,25%)]">
-            <div className="w-full h-full bg-gradient-to-br from-[hsl(220,50%,15%)] to-[hsl(220,50%,8%)] rounded-xl flex flex-col items-center justify-center gap-2">
+          <div className="w-full h-full bg-gradient-to-br from-secondary to-muted rounded-2xl p-2 shadow-2xl border border-border">
+            <div className="w-full h-full bg-gradient-to-br from-background to-muted rounded-xl flex flex-col items-center justify-center gap-2">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 1.5, type: 'spring' }}
               >
-                <CheckCircle2 className="w-10 h-10 text-[hsl(145,65%,42%)]" />
+                <CheckCircle2 className="w-10 h-10 text-chart-4" />
               </motion.div>
               <motion.span 
-                className="text-xs text-[hsl(145,65%,55%)] font-medium"
+                className="text-xs text-chart-4 font-medium"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.8 }}
@@ -146,15 +174,15 @@ export default function PaymentVisualization() {
             >
               <div className="flex flex-col items-center gap-2">
                 <motion.div 
-                  className="w-12 h-12 rounded-xl bg-[hsl(220,30%,15%)] border border-[hsl(220,30%,25%)] flex items-center justify-center"
-                  whileHover={{ scale: 1.1, borderColor: 'hsl(45, 90%, 50%)' }}
+                  className="w-12 h-12 rounded-xl bg-secondary border border-border flex items-center justify-center"
+                  whileHover={{ scale: 1.1, borderColor: 'hsl(var(--primary))' }}
                 >
-                  <step.icon className="w-5 h-5 text-[hsl(45,90%,50%)]" />
+                  <step.icon className="w-5 h-5 text-primary" />
                 </motion.div>
-                <span className="text-xs text-[hsl(220,20%,70%)]">{step.label}</span>
+                <span className="text-xs text-muted-foreground">{step.label}</span>
               </div>
               {index < steps.length - 1 && (
-                <ArrowRight className="w-4 h-4 text-[hsl(220,20%,40%)] mt-[-20px]" />
+                <ArrowRight className="w-4 h-4 text-muted-foreground mt-[-20px]" />
               )}
             </motion.div>
           ))}
