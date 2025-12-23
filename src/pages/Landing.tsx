@@ -76,12 +76,16 @@ export default function Landing() {
               </motion.div>
 
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
-                <span className="text-foreground">Accept UPI</span>
-                <br />
-                <span className="text-foreground">Payments </span>
-                <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                  Instantly
+                <span className="text-foreground">Accept </span>
+                <span className="bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(280,80%,60%)] to-[hsl(145,65%,50%)] bg-clip-text text-transparent">
+                  UPI Payments
                 </span>
+                <br />
+                <span className="text-foreground">with </span>
+                <span className="bg-gradient-to-r from-[hsl(35,92%,50%)] to-[hsl(198,93%,59%)] bg-clip-text text-transparent">
+                  Instant
+                </span>
+                <span className="text-foreground"> Settlements</span>
               </h1>
 
               <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0">
