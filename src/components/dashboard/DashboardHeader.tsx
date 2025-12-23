@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function DashboardHeader() {
   return (
@@ -26,6 +27,9 @@ export default function DashboardHeader() {
 
       {/* Right Section */}
       <div className="flex items-center gap-4">
+        {/* Theme Toggle */}
+        <ThemeToggle />
+        
         {/* Notifications */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
