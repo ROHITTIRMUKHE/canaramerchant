@@ -50,8 +50,8 @@ export default function DashboardSidebar() {
         className={cn(
           "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200",
           isActive
-            ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-md"
-            : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+            ? "bg-primary text-primary-foreground shadow-md font-semibold"
+            : "text-foreground hover:bg-accent hover:text-accent-foreground font-medium"
         )}
       >
         <item.icon className="h-5 w-5 shrink-0" />
@@ -59,7 +59,7 @@ export default function DashboardSidebar() {
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-sm font-medium"
+            className="text-sm"
           >
             {item.label}
           </motion.span>
@@ -97,8 +97,8 @@ export default function DashboardSidebar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <h1 className="font-bold text-sidebar-foreground">Canara Bank</h1>
-              <p className="text-xs text-sidebar-foreground/60">Merchant Portal</p>
+          <h1 className="font-bold text-foreground">Canara Bank</h1>
+              <p className="text-xs text-muted-foreground">Merchant Portal</p>
             </motion.div>
           )}
         </div>
@@ -127,10 +127,10 @@ export default function DashboardSidebar() {
         
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-destructive hover:bg-destructive/10 transition-all duration-200"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-destructive hover:bg-destructive/10 transition-all duration-200 font-medium"
         >
           <LogOut className="h-5 w-5 shrink-0" />
-          {!collapsed && <span className="text-sm font-medium">Logout</span>}
+          {!collapsed && <span className="text-sm">Logout</span>}
         </button>
       </div>
 
@@ -140,7 +140,7 @@ export default function DashboardSidebar() {
           variant="ghost"
           size="sm"
           onClick={() => setCollapsed(!collapsed)}
-          className="w-full justify-center text-sidebar-foreground/70 hover:text-sidebar-foreground"
+          className="w-full justify-center text-muted-foreground hover:text-foreground"
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </Button>
