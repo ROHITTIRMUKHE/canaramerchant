@@ -50,8 +50,8 @@ export default function DashboardSidebar() {
         className={cn(
           "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200",
           isActive
-            ? "bg-primary text-primary-foreground shadow-md font-semibold"
-            : "text-foreground hover:bg-accent hover:text-accent-foreground font-medium"
+            ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-md font-semibold"
+            : "text-sidebar-foreground/90 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground font-semibold"
         )}
       >
         <item.icon className="h-5 w-5 shrink-0" />
@@ -59,7 +59,7 @@ export default function DashboardSidebar() {
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-sm"
+            className="text-sm font-semibold"
           >
             {item.label}
           </motion.span>
@@ -82,7 +82,7 @@ export default function DashboardSidebar() {
   return (
     <aside
       className={cn(
-        "h-screen bg-sidebar flex flex-col transition-all duration-300 border-r border-sidebar-border",
+        "h-screen bg-sidebar text-sidebar-foreground flex flex-col transition-all duration-300 border-r border-sidebar-border",
         collapsed ? "w-20" : "w-64"
       )}
     >
@@ -90,15 +90,15 @@ export default function DashboardSidebar() {
       <div className="p-4 border-b border-sidebar-border">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center shrink-0">
-            <span className="text-sidebar-primary-foreground font-bold">CB</span>
+            <span className="text-primary-foreground font-bold">CB</span>
           </div>
           {!collapsed && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-          <h1 className="font-bold text-foreground">Canara Bank</h1>
-              <p className="text-xs text-muted-foreground">Merchant Portal</p>
+              <h1 className="font-bold text-sidebar-foreground">Canara Bank</h1>
+              <p className="text-xs text-sidebar-foreground/70">Merchant Portal</p>
             </motion.div>
           )}
         </div>
@@ -116,7 +116,7 @@ export default function DashboardSidebar() {
       </nav>
 
       {/* Bottom Section */}
-      <div className="p-4 border-t border-sidebar-border space-y-2">
+      <div className="p-4 border-t border-border space-y-2">
         {bottomItems.map((item) => (
           <MenuItem
             key={item.id}
@@ -135,12 +135,12 @@ export default function DashboardSidebar() {
       </div>
 
       {/* Collapse Toggle */}
-      <div className="p-4 border-t border-sidebar-border">
+      <div className="p-4 border-t border-border">
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setCollapsed(!collapsed)}
-          className="w-full justify-center text-muted-foreground hover:text-foreground"
+          className="w-full justify-center text-muted-foreground hover:text-foreground font-medium"
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </Button>
