@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import QRManagement from "./pages/QRManagement";
+import TransactionSummary from "./pages/TransactionSummary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/qr" element={<QRManagement />} />
+            <Route path="/dashboard/transactions" element={<TransactionSummary />} />
             <Route path="/dashboard/*" element={<Dashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
