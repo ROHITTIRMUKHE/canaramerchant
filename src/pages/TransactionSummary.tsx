@@ -95,6 +95,290 @@ const durationOptions = [
   { value: 'custom', label: 'Custom Date' },
 ];
 
+// Sample transaction data with all scenarios (displayed by default)
+const sampleTransactions = [
+  {
+    id: 'TXN000001',
+    payeeVpa: 'ca****t1@canara',
+    payeeVpaFull: 'canarabankmerchant1@canara',
+    dateTime: new Date('2024-12-24T14:30:25'),
+    rrn: '4123****7890',
+    rrnFull: '412345677890',
+    amount: 15000,
+    status: 'SUCCESS',
+    payerVpa: 'ra****ma@upi',
+    payerVpaFull: 'rahul.sharma@upi',
+    payerName: 'Rahul Sharma',
+    remarks: 'Payment for electronics purchase'
+  },
+  {
+    id: 'TXN000002',
+    payeeVpa: 'ca****t1@canara',
+    payeeVpaFull: 'canarabankmerchant1@canara',
+    dateTime: new Date('2024-12-24T13:15:42'),
+    rrn: '5234****8901',
+    rrnFull: '523456788901',
+    amount: 2500,
+    status: 'PENDING',
+    payerVpa: 'pr****el@upi',
+    payerVpaFull: 'priya.patel@upi',
+    payerName: 'Priya Patel',
+    remarks: 'Bill settlement'
+  },
+  {
+    id: 'TXN000003',
+    payeeVpa: 'ca****t1@canara',
+    payeeVpaFull: 'canarabankmerchant1@canara',
+    dateTime: new Date('2024-12-24T12:45:18'),
+    rrn: '6345****9012',
+    rrnFull: '634567899012',
+    amount: 8750,
+    status: 'FAILURE',
+    payerVpa: 'am****ar@upi',
+    payerVpaFull: 'amit.kumar@upi',
+    payerName: 'Amit Kumar',
+    remarks: 'Product purchase - Payment failed'
+  },
+  {
+    id: 'TXN000004',
+    payeeVpa: 'ca****t1@canara',
+    payeeVpaFull: 'canarabankmerchant1@canara',
+    dateTime: new Date('2024-12-24T11:20:55'),
+    rrn: '7456****0123',
+    rrnFull: '745678900123',
+    amount: 45000,
+    status: 'DEEMED',
+    payerVpa: 'sn****dy@upi',
+    payerVpaFull: 'sneha.reddy@upi',
+    payerName: 'Sneha Reddy',
+    remarks: 'Large transaction - Under review'
+  },
+  {
+    id: 'TXN000005',
+    payeeVpa: 'ca****t1@canara',
+    payeeVpaFull: 'canarabankmerchant1@canara',
+    dateTime: new Date('2024-12-24T10:05:33'),
+    rrn: '8567****1234',
+    rrnFull: '856789011234',
+    amount: 1200,
+    status: 'SUCCESS',
+    payerVpa: 'vi****gh@upi',
+    payerVpaFull: 'vikash.singh@upi',
+    payerName: 'Vikash Singh',
+    remarks: 'Food order payment'
+  },
+  {
+    id: 'TXN000006',
+    payeeVpa: 'ca****t2@canara',
+    payeeVpaFull: 'canarabankmerchant2@canara',
+    dateTime: new Date('2024-12-23T16:45:12'),
+    rrn: '9678****2345',
+    rrnFull: '967890122345',
+    amount: 3500,
+    status: 'SUCCESS',
+    payerVpa: 'an****ta@upi',
+    payerVpaFull: 'anjali.gupta@upi',
+    payerName: 'Anjali Gupta',
+    remarks: 'Subscription renewal'
+  },
+  {
+    id: 'TXN000007',
+    payeeVpa: 'ca****t2@canara',
+    payeeVpaFull: 'canarabankmerchant2@canara',
+    dateTime: new Date('2024-12-23T15:30:28'),
+    rrn: '1789****3456',
+    rrnFull: '178901233456',
+    amount: 22000,
+    status: 'PENDING',
+    payerVpa: 'ra****ra@upi',
+    payerVpaFull: 'raj.malhotra@upi',
+    payerName: 'Raj Malhotra',
+    remarks: 'Service fee - Processing'
+  },
+  {
+    id: 'TXN000008',
+    payeeVpa: 'sh****hi@canara',
+    payeeVpaFull: 'shopkeeper.delhi@canara',
+    dateTime: new Date('2024-12-23T14:20:45'),
+    rrn: '2890****4567',
+    rrnFull: '289012344567',
+    amount: 550,
+    status: 'SUCCESS',
+    payerVpa: 'ne****ma@upi',
+    payerVpaFull: 'neha.verma@upi',
+    payerName: 'Neha Verma',
+    remarks: 'Recharge payment'
+  },
+  {
+    id: 'TXN000009',
+    payeeVpa: 'sh****hi@canara',
+    payeeVpaFull: 'shopkeeper.delhi@canara',
+    dateTime: new Date('2024-12-23T12:10:55'),
+    rrn: '3901****5678',
+    rrnFull: '390123455678',
+    amount: 7800,
+    status: 'FAILURE',
+    payerVpa: 'su****an@upi',
+    payerVpaFull: 'suresh.rajan@upi',
+    payerName: 'Suresh Rajan',
+    remarks: 'Utility bill - Bank declined'
+  },
+  {
+    id: 'TXN000010',
+    payeeVpa: 're****ai@canara',
+    payeeVpaFull: 'retailstore.mumbai@canara',
+    dateTime: new Date('2024-12-22T18:55:30'),
+    rrn: '4012****6789',
+    rrnFull: '401234566789',
+    amount: 125000,
+    status: 'SUCCESS',
+    payerVpa: 'de****sh@upi',
+    payerVpaFull: 'deepak.joshi@upi',
+    payerName: 'Deepak Joshi',
+    remarks: 'High value purchase - Verified'
+  },
+  {
+    id: 'TXN000011',
+    payeeVpa: 're****ai@canara',
+    payeeVpaFull: 'retailstore.mumbai@canara',
+    dateTime: new Date('2024-12-22T17:40:18'),
+    rrn: '5123****7890',
+    rrnFull: '512345677890',
+    amount: 890,
+    status: 'DEEMED',
+    payerVpa: 'ka****ni@upi',
+    payerVpaFull: 'kavita.rani@upi',
+    payerName: 'Kavita Rani',
+    remarks: 'Transaction timeout - Deemed'
+  },
+  {
+    id: 'TXN000012',
+    payeeVpa: 'gr****re@canara',
+    payeeVpaFull: 'grocerymart.bangalore@canara',
+    dateTime: new Date('2024-12-22T16:25:42'),
+    rrn: '6234****8901',
+    rrnFull: '623456788901',
+    amount: 4200,
+    status: 'SUCCESS',
+    payerVpa: 'mo****ed@upi',
+    payerVpaFull: 'mohit.ahmed@upi',
+    payerName: 'Mohit Ahmed',
+    remarks: 'Grocery shopping'
+  },
+  {
+    id: 'TXN000013',
+    payeeVpa: 'gr****re@canara',
+    payeeVpaFull: 'grocerymart.bangalore@canara',
+    dateTime: new Date('2024-12-22T15:10:55'),
+    rrn: '7345****9012',
+    rrnFull: '734567899012',
+    amount: 18500,
+    status: 'PENDING',
+    payerVpa: 'sa****ti@upi',
+    payerVpaFull: 'sandeep.tiwari@upi',
+    payerName: 'Sandeep Tiwari',
+    remarks: 'Bulk order - Awaiting confirmation'
+  },
+  {
+    id: 'TXN000014',
+    payeeVpa: 'el****ai@canara',
+    payeeVpaFull: 'electronics.chennai@canara',
+    dateTime: new Date('2024-12-21T14:30:28'),
+    rrn: '8456****0123',
+    rrnFull: '845678900123',
+    amount: 67500,
+    status: 'SUCCESS',
+    payerVpa: 'ar****an@upi',
+    payerVpaFull: 'arun.krishnan@upi',
+    payerName: 'Arun Krishnan',
+    remarks: 'Laptop purchase'
+  },
+  {
+    id: 'TXN000015',
+    payeeVpa: 'el****ai@canara',
+    payeeVpaFull: 'electronics.chennai@canara',
+    dateTime: new Date('2024-12-21T13:15:42'),
+    rrn: '9567****1234',
+    rrnFull: '956789011234',
+    amount: 2999,
+    status: 'FAILURE',
+    payerVpa: 'me****ta@upi',
+    payerVpaFull: 'meera.mehta@upi',
+    payerName: 'Meera Mehta',
+    remarks: 'Accessory purchase - Insufficient funds'
+  },
+  {
+    id: 'TXN000016',
+    payeeVpa: 'ph****ad@canara',
+    payeeVpaFull: 'pharmacy.hyderabad@canara',
+    dateTime: new Date('2024-12-21T11:45:18'),
+    rrn: '1678****2345',
+    rrnFull: '167890122345',
+    amount: 1850,
+    status: 'SUCCESS',
+    payerVpa: 'ra****ri@upi',
+    payerVpaFull: 'ramesh.suri@upi',
+    payerName: 'Ramesh Suri',
+    remarks: 'Medicine purchase'
+  },
+  {
+    id: 'TXN000017',
+    payeeVpa: 'ph****ad@canara',
+    payeeVpaFull: 'pharmacy.hyderabad@canara',
+    dateTime: new Date('2024-12-21T10:30:55'),
+    rrn: '2789****3456',
+    rrnFull: '278901233456',
+    amount: 5600,
+    status: 'DEEMED',
+    payerVpa: 'la****mi@upi',
+    payerVpaFull: 'lakshmi.nair@upi',
+    payerName: 'Lakshmi Nair',
+    remarks: 'Health products - Status pending'
+  },
+  {
+    id: 'TXN000018',
+    payeeVpa: 're****ne@canara',
+    payeeVpaFull: 'restaurant.pune@canara',
+    dateTime: new Date('2024-12-20T19:20:33'),
+    rrn: '3890****4567',
+    rrnFull: '389012344567',
+    amount: 3200,
+    status: 'SUCCESS',
+    payerVpa: 'vi****ay@upi',
+    payerVpaFull: 'vijay.dubey@upi',
+    payerName: 'Vijay Dubey',
+    remarks: 'Dinner bill payment'
+  },
+  {
+    id: 'TXN000019',
+    payeeVpa: 're****ne@canara',
+    payeeVpaFull: 'restaurant.pune@canara',
+    dateTime: new Date('2024-12-20T18:05:12'),
+    rrn: '4901****5678',
+    rrnFull: '490123455678',
+    amount: 980,
+    status: 'PENDING',
+    payerVpa: 'sh****ti@upi',
+    payerVpaFull: 'shweta.bharti@upi',
+    payerName: 'Shweta Bharti',
+    remarks: 'Takeaway order - Processing'
+  },
+  {
+    id: 'TXN000020',
+    payeeVpa: 're****ne@canara',
+    payeeVpaFull: 'restaurant.pune@canara',
+    dateTime: new Date('2024-12-20T16:45:28'),
+    rrn: '5012****6789',
+    rrnFull: '501234566789',
+    amount: 15750,
+    status: 'SUCCESS',
+    payerVpa: 'ak****ay@upi',
+    payerVpaFull: 'akash.pandey@upi',
+    payerName: 'Akash Pandey',
+    remarks: 'Party order payment'
+  },
+];
+
 // Mock transaction data generator
 const generateMockTransactions = (merchantId: string, count: number = 50) => {
   const statuses = ['SUCCESS', 'PENDING', 'FAILURE', 'DEEMED'];
@@ -109,6 +393,7 @@ const generateMockTransactions = (merchantId: string, count: number = 50) => {
     return {
       id: `TXN${String(i + 1).padStart(6, '0')}`,
       payeeVpa: maskVPA(merchantId),
+      payeeVpaFull: merchantId,
       dateTime: date,
       rrn: maskRRN(`${Math.floor(Math.random() * 900000000000) + 100000000000}`),
       rrnFull: `${Math.floor(Math.random() * 900000000000) + 100000000000}`,
@@ -147,10 +432,10 @@ export default function TransactionSummary() {
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
   
-  // Data states
-  const [transactions, setTransactions] = useState<any[]>([]);
+  // Data states - show sample transactions by default
+  const [transactions, setTransactions] = useState<any[]>(sampleTransactions);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+  const [hasSearched, setHasSearched] = useState(true); // Show table by default
   
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -175,15 +460,15 @@ export default function TransactionSummary() {
     setSelectedStatuses([]);
   };
 
-  // Clear all filters
+  // Clear all filters - reset to sample data
   const handleClearFilters = () => {
     setSelectedMerchant('');
     setDuration('today');
     setFromDate(undefined);
     setToDate(undefined);
     setSelectedStatuses([]);
-    setTransactions([]);
-    setHasSearched(false);
+    setTransactions(sampleTransactions);
+    setHasSearched(true);
     setCurrentPage(1);
   };
 
@@ -670,19 +955,19 @@ export default function TransactionSummary() {
                         </div>
                       ) : (
                         <>
-                          <div className="overflow-x-auto">
-                            <Table>
-                              <TableHeader className="sticky top-0 bg-muted/80 backdrop-blur">
-                                <TableRow>
-                                  <TableHead className="font-semibold">Payee VPA</TableHead>
-                                  <TableHead className="font-semibold">Date & Time</TableHead>
-                                  <TableHead className="font-semibold">RRN</TableHead>
-                                  <TableHead className="font-semibold text-right">Amount</TableHead>
-                                  <TableHead className="font-semibold">Status</TableHead>
-                                  <TableHead className="font-semibold">Payer VPA</TableHead>
-                                  <TableHead className="font-semibold">Payer Name</TableHead>
-                                  <TableHead className="font-semibold">Remarks</TableHead>
-                                  <TableHead className="font-semibold text-center">Action</TableHead>
+                          <div className="overflow-x-auto border rounded-lg">
+                            <Table className="min-w-full">
+                              <TableHeader className="sticky top-0 bg-primary/10 backdrop-blur">
+                                <TableRow className="border-b-2 border-primary/30">
+                                  <TableHead className="font-bold text-foreground border-r border-border/50 whitespace-nowrap">Payee VPA</TableHead>
+                                  <TableHead className="font-bold text-foreground border-r border-border/50 whitespace-nowrap">Date & Time</TableHead>
+                                  <TableHead className="font-bold text-foreground border-r border-border/50 whitespace-nowrap">RRN</TableHead>
+                                  <TableHead className="font-bold text-foreground border-r border-border/50 whitespace-nowrap text-right">Amount (₹)</TableHead>
+                                  <TableHead className="font-bold text-foreground border-r border-border/50 whitespace-nowrap text-center">Status</TableHead>
+                                  <TableHead className="font-bold text-foreground border-r border-border/50 whitespace-nowrap">Payer VPA</TableHead>
+                                  <TableHead className="font-bold text-foreground border-r border-border/50 whitespace-nowrap">Payer Name</TableHead>
+                                  <TableHead className="font-bold text-foreground border-r border-border/50 whitespace-nowrap">Remarks</TableHead>
+                                  <TableHead className="font-bold text-foreground whitespace-nowrap text-center">Action</TableHead>
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
@@ -691,33 +976,35 @@ export default function TransactionSummary() {
                                     key={txn.id}
                                     initial={{ opacity: 0, x: -10 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: index * 0.03 }}
-                                    className="border-b border-border/50 hover:bg-muted/30"
+                                    transition={{ delay: index * 0.02 }}
+                                    className={cn(
+                                      "border-b border-border/50 hover:bg-muted/50 transition-colors",
+                                      index % 2 === 0 ? "bg-background" : "bg-muted/20"
+                                    )}
                                   >
-                                    <TableCell className="font-mono text-sm">{txn.payeeVpa}</TableCell>
-                                    <TableCell className="text-sm">
-                                      <div>
-                                        <p>{format(txn.dateTime, 'dd/MM/yyyy')}</p>
+                                    <TableCell className="font-mono text-sm border-r border-border/30 py-3">{txn.payeeVpa}</TableCell>
+                                    <TableCell className="text-sm border-r border-border/30 py-3">
+                                      <div className="whitespace-nowrap">
+                                        <p className="font-medium">{format(txn.dateTime, 'dd/MM/yyyy')}</p>
                                         <p className="text-xs text-muted-foreground">{format(txn.dateTime, 'HH:mm:ss')}</p>
                                       </div>
                                     </TableCell>
-                                    <TableCell className="font-mono text-sm">{txn.rrn}</TableCell>
-                                    <TableCell className="text-right font-semibold">
-                                      <span className="flex items-center justify-end">
-                                        <IndianRupee className="w-3 h-3" />
-                                        {txn.amount.toLocaleString('en-IN')}
+                                    <TableCell className="font-mono text-sm border-r border-border/30 py-3">{txn.rrn}</TableCell>
+                                    <TableCell className="text-right font-bold border-r border-border/30 py-3">
+                                      <span className="flex items-center justify-end text-foreground">
+                                        ₹{txn.amount.toLocaleString('en-IN')}
                                       </span>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell className="border-r border-border/30 py-3 text-center">
                                       <StatusBadge status={txn.status} />
                                     </TableCell>
-                                    <TableCell className="font-mono text-sm">{txn.payerVpa}</TableCell>
-                                    <TableCell className="text-sm">{txn.payerName}</TableCell>
-                                    <TableCell className="text-sm text-muted-foreground">{txn.remarks}</TableCell>
-                                    <TableCell className="text-center">
+                                    <TableCell className="font-mono text-sm border-r border-border/30 py-3">{txn.payerVpa}</TableCell>
+                                    <TableCell className="text-sm border-r border-border/30 py-3 font-medium">{txn.payerName}</TableCell>
+                                    <TableCell className="text-sm text-muted-foreground border-r border-border/30 py-3 max-w-[200px] truncate">{txn.remarks}</TableCell>
+                                    <TableCell className="text-center py-3">
                                       <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
-                                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-primary/10">
                                             <MoreHorizontal className="h-4 w-4" />
                                           </Button>
                                         </DropdownMenuTrigger>
