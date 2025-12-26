@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import QRManagement from "./pages/QRManagement";
 import TransactionSummary from "./pages/TransactionSummary";
 import Reports from "./pages/Reports";
+import ProfileSettings from "./pages/ProfileSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/dashboard/qr" element={<QRManagement />} />
             <Route path="/dashboard/transactions" element={<TransactionSummary />} />
             <Route path="/dashboard/reports" element={<Reports />} />
+            <Route path="/dashboard/settings" element={<ProfileSettings />} />
             <Route path="/dashboard/*" element={<Dashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
