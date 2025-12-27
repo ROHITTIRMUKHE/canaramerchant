@@ -97,7 +97,7 @@ export default function LoginCard() {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.5 }}
-      className="w-full max-w-[340px] -mt-8"
+      className="w-full max-w-[340px] -mt-16"
       style={{
         transform: `perspective(1000px) rotateY(${normalizedX * 2}deg) rotateX(${normalizedY * -2}deg)`,
       }}
@@ -108,16 +108,16 @@ export default function LoginCard() {
         <div className="absolute -inset-1 bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(210,100%,50%)] to-[hsl(198,93%,59%)] rounded-3xl blur-xl opacity-15" />
         
         {/* FORCED WHITE CARD - ignores dark mode */}
-        <div className="relative rounded-2xl border border-[hsl(220,13%,85%)] p-6 shadow-xl"
+        <div className="relative rounded-2xl border border-[hsl(220,13%,85%)] p-5 shadow-xl"
           style={{ 
             backgroundColor: '#ffffff',
             boxShadow: '0 10px 40px rgba(0,0,0,0.08), 0 2px 10px rgba(0,0,0,0.04)'
           }}
         >
           {/* Header with Logo */}
-          <div className="text-center mb-6">
+          <div className="text-center mb-4">
             <motion.div 
-              className="flex items-center justify-center gap-3 mb-3"
+              className="flex items-center justify-center gap-2 mb-2"
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.7, type: 'spring' }}
@@ -125,7 +125,7 @@ export default function LoginCard() {
               <img 
                 src={canaraBankLogo} 
                 alt="Canara Bank" 
-                className="h-12 w-auto object-contain"
+                className="h-10 w-auto object-contain"
               />
             </motion.div>
             <h2 className="text-lg font-bold" style={{ color: '#1a1a1a' }}>Merchant Login</h2>
@@ -133,13 +133,13 @@ export default function LoginCard() {
           </div>
 
           {/* Login mode toggle - light themed */}
-          <div className="flex gap-2 p-1 rounded-xl mb-4" style={{ backgroundColor: '#f3f4f6' }}>
+          <div className="flex gap-2 p-1 rounded-xl mb-3" style={{ backgroundColor: '#f3f4f6' }}>
             {(['password', 'otp'] as const).map((m) => (
               <button
                 key={m}
                 onClick={() => { setMode(m); setOtpSent(false); }}
                 className={cn(
-                  "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all",
+                  "flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-all",
                   mode === m 
                     ? "shadow-md" 
                     : ""
@@ -156,7 +156,7 @@ export default function LoginCard() {
           </div>
 
           {/* Mobile input */}
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <div className="space-y-2">
               <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>Mobile Number</Label>
               <div className="relative">
@@ -165,7 +165,7 @@ export default function LoginCard() {
                 <input
                   type="tel"
                   placeholder="Enter 10-digit number"
-                  className="w-full pl-20 h-12 rounded-lg text-lg font-bold outline-none transition-all"
+                  className="w-full pl-20 h-10 rounded-lg text-base font-bold outline-none transition-all"
                   style={{
                     backgroundColor: '#ffffff',
                     border: '2px solid #d1d5db',
@@ -196,7 +196,7 @@ export default function LoginCard() {
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter password"
-                      className="w-full pl-12 pr-12 h-12 rounded-lg text-lg font-bold outline-none transition-all"
+                      className="w-full pl-12 pr-12 h-10 rounded-lg text-base font-bold outline-none transition-all"
                       style={{
                         backgroundColor: '#ffffff',
                         border: '2px solid #d1d5db',
@@ -231,7 +231,7 @@ export default function LoginCard() {
                   {!otpSent ? (
                     <Button
                       onClick={handleSendOtp}
-                      className="w-full h-12 font-semibold transition-all"
+                      className="w-full h-10 font-semibold transition-all"
                       style={{
                         backgroundColor: '#ffffff',
                         border: '2px solid hsl(198,93%,59%)',
@@ -249,7 +249,7 @@ export default function LoginCard() {
                             key={i}
                             type="text"
                             maxLength={1}
-                            className="w-12 h-12 text-center text-xl font-bold rounded-lg outline-none transition-all"
+                            className="w-10 h-10 text-center text-lg font-bold rounded-lg outline-none transition-all"
                             style={{
                               backgroundColor: '#ffffff',
                               border: '2px solid #d1d5db',
@@ -299,7 +299,7 @@ export default function LoginCard() {
               <Button
                 onClick={handleLogin}
                 disabled={isLoading || (mode === 'otp' && !otpSent)}
-                className="w-full h-12 font-semibold transition-all shadow-lg disabled:opacity-50"
+                className="w-full h-10 font-semibold transition-all shadow-lg disabled:opacity-50"
                 style={{
                   background: 'linear-gradient(135deg, hsl(198,93%,50%) 0%, hsl(210,100%,45%) 100%)',
                   color: '#ffffff',
@@ -322,7 +322,7 @@ export default function LoginCard() {
           </div>
 
           {/* Security footer - light themed */}
-          <div className="mt-4 pt-4" style={{ borderTop: '1px solid #e5e7eb' }}>
+          <div className="mt-3 pt-3" style={{ borderTop: '1px solid #e5e7eb' }}>
             <div className="flex items-center justify-center gap-2 text-xs" style={{ color: '#6b7280' }}>
               <Shield className="h-4 w-4" style={{ color: 'hsl(145,65%,40%)' }} />
               <span>256-bit SSL Encrypted • NPCI Compliant • PCI DSS Certified</span>
@@ -332,7 +332,7 @@ export default function LoginCard() {
       </div>
 
       {/* Copyright - dark text for visibility */}
-      <p className="text-center text-xs mt-4" style={{ color: '#6b7280' }}>
+      <p className="text-center text-xs mt-3" style={{ color: '#6b7280' }}>
         © 2024 Canara Bank. All Rights Reserved.
       </p>
     </motion.div>
