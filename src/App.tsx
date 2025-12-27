@@ -11,6 +11,7 @@ import TransactionSummary from "./pages/TransactionSummary";
 import Reports from "./pages/Reports";
 import ProfileSettings from "./pages/ProfileSettings";
 import CanaraSupport from "./pages/CanaraSupport";
+import RefundsDisputes from "./pages/RefundsDisputes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/dashboard/reports" element={<Reports />} />
             <Route path="/dashboard/settings" element={<ProfileSettings />} />
             <Route path="/dashboard/support" element={<CanaraSupport />} />
+            <Route path="/dashboard/refunds" element={<RefundsDisputes />} />
             <Route path="/dashboard/*" element={<Dashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
