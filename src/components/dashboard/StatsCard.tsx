@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ColorScheme, colorStyles } from '@/lib/colorSchemes';
 
 interface StatsCardProps {
   title: string;
@@ -8,7 +9,7 @@ interface StatsCardProps {
   change?: string;
   changeType?: 'positive' | 'negative' | 'neutral';
   icon: LucideIcon;
-  iconColor?: string;
+  colorScheme?: ColorScheme;
   delay?: number;
 }
 
@@ -18,18 +19,23 @@ export default function StatsCard({
   change,
   changeType = 'neutral',
   icon: Icon,
-  iconColor = 'text-primary',
+  colorScheme = 'blue',
   delay = 0
 }: StatsCardProps) {
+  const colors = colorStyles[colorScheme];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      className="bg-card rounded-xl p-6 shadow-card border border-border hover:shadow-lg transition-shadow"
+      className={cn(
+        "rounded-xl p-6 shadow-card border hover:shadow-lg transition-shadow",
+        colors.card
+      )}
     >
       <div className="flex items-start justify-between mb-4">
-        <div className={cn("p-3 rounded-xl bg-primary/10", iconColor)}>
+        <div className={cn("p-3 rounded-xl", colors.icon)}>
           <Icon className="h-5 w-5" />
         </div>
         {change && (

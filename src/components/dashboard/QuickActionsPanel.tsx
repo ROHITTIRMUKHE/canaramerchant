@@ -3,6 +3,8 @@ import { ArrowRightLeft, Download, RefreshCcw, UserPlus, QrCode } from 'lucide-r
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { colorStyles, ColorScheme } from '@/lib/colorSchemes';
+import { cn } from '@/lib/utils';
 
 interface QuickActionsPanelProps {
   isMainMerchant?: boolean;
@@ -13,35 +15,35 @@ const getActions = (isMainMerchant: boolean) => [
     icon: ArrowRightLeft,
     label: 'View Transactions',
     description: 'View all payment history',
-    color: 'bg-chart-1/10 text-chart-1',
+    colorScheme: 'blue' as ColorScheme,
     path: '/dashboard/transactions'
   },
   {
     icon: Download,
     label: 'Download Settlement',
     description: 'Export settlement reports',
-    color: 'bg-chart-2/10 text-chart-2',
+    colorScheme: 'green' as ColorScheme,
     path: '/dashboard/settlements'
   },
   {
     icon: RefreshCcw,
     label: 'Initiate Refund',
     description: 'Process customer refund',
-    color: 'bg-chart-3/10 text-chart-3',
+    colorScheme: 'yellow' as ColorScheme,
     path: '/dashboard/refunds'
   },
   ...(isMainMerchant ? [{
     icon: UserPlus,
     label: 'Add Sub-Merchant',
     description: 'Register new outlet',
-    color: 'bg-chart-4/10 text-chart-4',
+    colorScheme: 'purple' as ColorScheme,
     path: '/dashboard/submerchants'
   }] : []),
   {
     icon: QrCode,
     label: 'Generate QR',
     description: 'Create payment QR code',
-    color: 'bg-primary/10 text-primary',
+    colorScheme: 'blue' as ColorScheme,
     path: '/dashboard/qr'
   }
 ];
@@ -62,28 +64,35 @@ export default function QuickActionsPanel({ isMainMerchant = true }: QuickAction
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
-            {actions.map((action, index) => (
-              <motion.div
-                key={action.label}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
-              >
-                <Button
-                  variant="outline"
-                  className="w-full h-auto p-4 flex flex-col items-center gap-2 hover:shadow-md hover:border-primary/30 transition-all"
-                  onClick={() => navigate(action.path)}
+            {actions.map((action, index) => {
+              const colors = colorStyles[action.colorScheme];
+              return (
+                <motion.div
+                  key={action.label}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
                 >
-                  <div className={`p-3 rounded-xl ${action.color}`}>
-                    <action.icon className="h-5 w-5" />
-                  </div>
-                  <span className="font-medium text-sm">{action.label}</span>
-                  <span className="text-xs text-muted-foreground text-center leading-tight">
-                    {action.description}
-                  </span>
-                </Button>
-              </motion.div>
-            ))}
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full h-auto p-4 flex flex-col items-center gap-2 hover:shadow-md transition-all border",
+                      colors.border,
+                      `hover:${colors.bg}`
+                    )}
+                    onClick={() => navigate(action.path)}
+                  >
+                    <div className={cn("p-3 rounded-xl", colors.icon)}>
+                      <action.icon className="h-5 w-5" />
+                    </div>
+                    <span className="font-medium text-sm">{action.label}</span>
+                    <span className="text-xs text-muted-foreground text-center leading-tight">
+                      {action.description}
+                    </span>
+                  </Button>
+                </motion.div>
+              );
+            })}
           </div>
         </CardContent>
       </Card>
