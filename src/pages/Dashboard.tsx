@@ -8,9 +8,13 @@ import AlertsSection from '@/components/dashboard/AlertsSection';
 import BusinessTrendChart from '@/components/dashboard/BusinessTrendChart';
 import RecentTransactions from '@/components/dashboard/RecentTransactions';
 import QuickActionsPanel from '@/components/dashboard/QuickActionsPanel';
+import { getActiveSubMerchantsCount } from '@/data/subMerchants';
 
 // Mock role - in real app this would come from auth context
 const isMainMerchant = true;
+
+// Get active sub-merchants count from shared data
+const activeSubMerchantsCount = getActiveSubMerchantsCount();
 
 // Mock data - in real app this would come from API
 const kpiData = {
@@ -29,8 +33,8 @@ const kpiData = {
     details: '4 items need attention'
   },
   activeSubMerchants: {
-    count: 45,
-    change: '+3'
+    count: activeSubMerchantsCount,
+    change: '+1'
   }
 };
 
