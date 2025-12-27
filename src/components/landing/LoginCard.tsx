@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useMouseParallax } from '@/hooks/useMouseParallax';
+import { useLanguage } from '@/lib/i18n';
 import canaraBankLogo from '@/assets/canara-bank-logo.png';
 
 type LoginMode = 'password' | 'otp';
@@ -24,12 +25,13 @@ export default function LoginCard() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { normalizedX, normalizedY } = useMouseParallax();
+  const { t } = useLanguage();
 
   const handleSendOtp = () => {
     if (mobileNumber.length !== 10) {
       toast({
-        title: "Invalid Mobile Number",
-        description: "Please enter a valid 10-digit mobile number",
+        title: t.login.invalidMobile,
+        description: t.login.invalidMobileDesc,
         variant: "destructive"
       });
       return;
@@ -38,8 +40,8 @@ export default function LoginCard() {
     setOtpSent(true);
     setCountdown(30);
     toast({
-      title: "OTP Sent Successfully",
-      description: "A 6-digit OTP has been sent to your mobile",
+      title: t.login.otpSentSuccess,
+      description: t.login.otpSentDesc,
     });
     
     const timer = setInterval(() => {
@@ -56,8 +58,8 @@ export default function LoginCard() {
   const handleLogin = () => {
     if (mobileNumber.length !== 10) {
       toast({
-        title: "Invalid Mobile Number",
-        description: "Please enter a valid 10-digit mobile number",
+        title: t.login.invalidMobile,
+        description: t.login.invalidMobileDesc,
         variant: "destructive"
       });
       return;
@@ -65,8 +67,8 @@ export default function LoginCard() {
     
     if (mode === 'password' && password.length < 6) {
       toast({
-        title: "Invalid Password",
-        description: "Password must be at least 6 characters",
+        title: t.login.invalidPassword,
+        description: t.login.invalidPasswordDesc,
         variant: "destructive"
       });
       return;
@@ -74,8 +76,8 @@ export default function LoginCard() {
 
     if (mode === 'otp' && otp.length !== 6) {
       toast({
-        title: "Invalid OTP",
-        description: "Please enter a valid 6-digit OTP",
+        title: t.login.invalidOtp,
+        description: t.login.invalidOtpDesc,
         variant: "destructive"
       });
       return;
@@ -85,8 +87,8 @@ export default function LoginCard() {
     setTimeout(() => {
       setIsLoading(false);
       toast({
-        title: "Login Successful",
-        description: "Welcome to Canara Bank UPI Merchant Portal",
+        title: t.login.loginSuccess,
+        description: t.login.loginSuccessDesc,
       });
       navigate('/dashboard');
     }, 1500);
@@ -128,8 +130,8 @@ export default function LoginCard() {
                 className="h-10 w-auto object-contain"
               />
             </motion.div>
-            <h2 className="text-lg font-bold" style={{ color: '#1a1a1a' }}>Merchant Login</h2>
-            <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Access your UPI dashboard</p>
+            <h2 className="text-lg font-bold" style={{ color: '#1a1a1a' }}>{t.login.title}</h2>
+            <p className="text-xs mt-1" style={{ color: '#6b7280' }}>{t.login.subtitle}</p>
           </div>
 
           {/* Login mode toggle - light themed */}
@@ -150,7 +152,7 @@ export default function LoginCard() {
                 }}
               >
                 {m === 'password' ? <KeyRound className="w-4 h-4" /> : <Fingerprint className="w-4 h-4" />}
-                {m === 'password' ? 'Password' : 'OTP'}
+                {m === 'password' ? t.login.password : t.login.otp}
               </button>
             ))}
           </div>
@@ -158,13 +160,13 @@ export default function LoginCard() {
           {/* Mobile input */}
           <div className="space-y-2.5">
             <div className="space-y-2">
-              <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>Mobile Number</Label>
+              <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>{t.login.mobileNumber}</Label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold" style={{ color: '#374151' }}>+91</span>
                 <Phone className="absolute left-12 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: '#6b7280' }} />
                 <input
                   type="tel"
-                  placeholder="Enter 10-digit number"
+                  placeholder={t.login.mobileNumberPlaceholder}
                   className="w-full pl-20 h-10 rounded-lg text-base font-bold outline-none transition-all"
                   style={{
                     backgroundColor: '#ffffff',
@@ -190,12 +192,12 @@ export default function LoginCard() {
                   exit={{ opacity: 0, height: 0 }}
                   className="space-y-2"
                 >
-                  <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>Password</Label>
+                  <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>{t.login.password}</Label>
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: '#6b7280' }} />
                     <input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter password"
+                      placeholder={t.login.passwordPlaceholder}
                       className="w-full pl-12 pr-12 h-10 rounded-lg text-base font-bold outline-none transition-all"
                       style={{
                         backgroundColor: '#ffffff',
@@ -217,7 +219,7 @@ export default function LoginCard() {
                     </button>
                   </div>
                   <div className="flex justify-end">
-                    <button className="text-xs font-medium hover:underline" style={{ color: 'hsl(198,93%,45%)' }}>Forgot Password?</button>
+                    <button className="text-xs font-medium hover:underline" style={{ color: 'hsl(198,93%,45%)' }}>{t.login.forgotPassword}</button>
                   </div>
                 </motion.div>
               ) : (
@@ -238,11 +240,11 @@ export default function LoginCard() {
                         color: 'hsl(198,93%,45%)',
                       }}
                     >
-                      Send OTP
+                      {t.login.sendOtp}
                     </Button>
                   ) : (
                     <>
-                      <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>Enter OTP</Label>
+                      <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>{t.login.enterOtp}</Label>
                       <div className="flex gap-2">
                         {Array.from({ length: 6 }).map((_, i) => (
                           <input
@@ -272,7 +274,7 @@ export default function LoginCard() {
                       </div>
                       <div className="flex justify-between text-xs">
                         <span style={{ color: '#6b7280' }}>
-                          {countdown > 0 ? `Resend in ${countdown}s` : ''}
+                          {countdown > 0 ? `${t.login.resendIn} ${countdown}s` : ''}
                         </span>
                         <button
                           onClick={handleSendOtp}
@@ -282,7 +284,7 @@ export default function LoginCard() {
                             color: countdown > 0 ? '#9ca3af' : 'hsl(198,93%,45%)'
                           }}
                         >
-                          Resend OTP
+                          {t.login.resendOtp}
                         </button>
                       </div>
                     </>
@@ -309,11 +311,11 @@ export default function LoginCard() {
                 {isLoading ? (
                   <div className="flex items-center gap-2">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Authenticating...
+                    {t.login.authenticating}
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    Login to Dashboard
+                    {t.login.loginButton}
                     <ArrowRight className="h-4 w-4" />
                   </div>
                 )}
@@ -325,7 +327,7 @@ export default function LoginCard() {
           <div className="mt-3 pt-3" style={{ borderTop: '1px solid #e5e7eb' }}>
             <div className="flex items-center justify-center gap-2 text-xs" style={{ color: '#6b7280' }}>
               <Shield className="h-4 w-4" style={{ color: 'hsl(145,65%,40%)' }} />
-              <span>256-bit SSL Encrypted • NPCI Compliant • PCI DSS Certified</span>
+              <span>{t.login.securityInfo}</span>
             </div>
           </div>
         </div>
@@ -333,7 +335,7 @@ export default function LoginCard() {
 
       {/* Copyright - dark text for visibility */}
       <p className="text-center text-xs mt-3" style={{ color: '#6b7280' }}>
-        © 2024 Canara Bank. All Rights Reserved.
+        {t.login.copyright}
       </p>
     </motion.div>
   );
