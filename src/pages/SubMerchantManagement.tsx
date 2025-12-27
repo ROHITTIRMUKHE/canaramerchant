@@ -1114,14 +1114,14 @@ export default function SubMerchantManagement() {
 
       {/* Stats Details Dialog */}
       <Dialog open={showStatsDialog} onOpenChange={setShowStatsDialog}>
-        <DialogContent className="max-w-3xl max-h-[80vh]">
-          <DialogHeader>
-            <DialogTitle>{getStatsDialogTitle()}</DialogTitle>
+        <DialogContent className="w-[75vw] max-w-[75vw] h-[90vh] max-h-[90vh] flex flex-col">
+          <DialogHeader className="px-6 pt-6 pb-4 border-b">
+            <DialogTitle className="text-xl">{getStatsDialogTitle()}</DialogTitle>
             <DialogDescription>
               Showing {getFilteredByStatus(statsDialogType).length} sub-merchant(s)
             </DialogDescription>
           </DialogHeader>
-          <ScrollArea className="max-h-[50vh]">
+          <ScrollArea className="flex-1 h-[calc(90vh-180px)] overflow-y-auto px-6">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -1160,7 +1160,7 @@ export default function SubMerchantManagement() {
               </TableBody>
             </Table>
           </ScrollArea>
-          <DialogFooter>
+          <DialogFooter className="px-6 py-4 border-t">
             <Button variant="outline" onClick={() => setShowStatsDialog(false)}>Close</Button>
           </DialogFooter>
         </DialogContent>
