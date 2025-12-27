@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowDownLeft, ArrowUpRight, MoreHorizontal } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 const transactions = [
   {
@@ -67,6 +68,10 @@ const transactions = [
 ];
 
 export default function RecentTransactions() {
+  const navigate = useNavigate();
+  // Show only last 5 transactions
+  const displayTransactions = transactions.slice(0, 5);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -76,8 +81,14 @@ export default function RecentTransactions() {
       <Card className="shadow-card">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg font-semibold">Recent Transactions</CardTitle>
-          <Button variant="ghost" size="sm" className="text-primary">
-            View All
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-primary gap-1"
+            onClick={() => navigate('/dashboard/transactions')}
+          >
+            View All Transactions
+            <ExternalLink className="h-3 w-3" />
           </Button>
         </CardHeader>
         <CardContent>
@@ -92,7 +103,7 @@ export default function RecentTransactions() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {transactions.map((txn, index) => (
+              {displayTransactions.map((txn, index) => (
                 <motion.tr
                   key={txn.id}
                   initial={{ opacity: 0, x: -20 }}
@@ -146,9 +157,13 @@ export default function RecentTransactions() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
+                    <Badge 
+                      variant="secondary" 
+                      className="text-xs cursor-pointer hover:bg-primary/20"
+                      onClick={() => navigate(`/dashboard/transactions?id=${txn.id}`)}
+                    >
+                      View
+                    </Badge>
                   </TableCell>
                 </motion.tr>
               ))}
