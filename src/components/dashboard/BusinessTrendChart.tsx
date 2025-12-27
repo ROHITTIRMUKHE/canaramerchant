@@ -12,6 +12,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { colorStyles } from '@/lib/colorSchemes';
 
 const data = [
   { name: 'Mon', date: '16 Dec', transactions: 45000, settlements: 42000, txnCount: 89 },
@@ -35,8 +36,9 @@ interface CustomTooltipProps {
 const CustomTooltip = ({ active, payload, label, view }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     const dataPoint = payload[0].payload;
+    const colors = view === 'settlements' ? colorStyles.green : colorStyles.blue;
     return (
-      <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
+      <div className={cn("border rounded-lg p-3 shadow-lg", colors.bg, colors.border)}>
         <p className="text-sm font-medium text-foreground mb-2">{dataPoint.date} ({label})</p>
         <div className="space-y-1">
           <p className="text-sm text-muted-foreground">
@@ -55,7 +57,8 @@ const CustomTooltip = ({ active, payload, label, view }: CustomTooltipProps) => 
 export default function BusinessTrendChart() {
   const [view, setView] = useState<ChartView>('settlements');
 
-  const chartColor = view === 'settlements' ? 'chart-2' : 'chart-1';
+  // Use color scheme based on view
+  const chartColorHex = view === 'settlements' ? '#10b981' : '#3b82f6'; // emerald-500 / blue-500
   const gradientId = view === 'settlements' ? 'colorSettlements' : 'colorTransactions';
 
   return (
@@ -64,17 +67,17 @@ export default function BusinessTrendChart() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
     >
-      <Card className="shadow-card">
+      <Card className={cn("shadow-card border", view === 'settlements' ? colorStyles.green.border : colorStyles.blue.border)}>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg font-semibold">Business Trend (Last 7 Days)</CardTitle>
-          <div className="flex items-center gap-1 p-1 bg-muted rounded-lg">
+          <div className={cn("flex items-center gap-1 p-1 rounded-lg", colorStyles.blue.bg)}>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setView('settlements')}
               className={cn(
                 "h-8 px-3 text-sm",
-                view === 'settlements' && "bg-background shadow-sm"
+                view === 'settlements' && cn("bg-background shadow-sm", colorStyles.green.text)
               )}
             >
               Settlements
@@ -85,7 +88,7 @@ export default function BusinessTrendChart() {
               onClick={() => setView('transactions')}
               className={cn(
                 "h-8 px-3 text-sm",
-                view === 'transactions' && "bg-background shadow-sm"
+                view === 'transactions' && cn("bg-background shadow-sm", colorStyles.blue.text)
               )}
             >
               Transactions
@@ -98,8 +101,8 @@ export default function BusinessTrendChart() {
               <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={`hsl(var(--${chartColor}))`} stopOpacity={0.3} />
-                    <stop offset="95%" stopColor={`hsl(var(--${chartColor}))`} stopOpacity={0} />
+                    <stop offset="5%" stopColor={chartColorHex} stopOpacity={0.3} />
+                    <stop offset="95%" stopColor={chartColorHex} stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -117,7 +120,7 @@ export default function BusinessTrendChart() {
                 <Area
                   type="monotone"
                   dataKey={view}
-                  stroke={`hsl(var(--${chartColor}))`}
+                  stroke={chartColorHex}
                   strokeWidth={2}
                   fillOpacity={1}
                   fill={`url(#${gradientId})`}

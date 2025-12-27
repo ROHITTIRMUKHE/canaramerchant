@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
+import { colorStyles } from '@/lib/colorSchemes';
 
 const transactions = [
   {
@@ -78,13 +79,15 @@ export default function RecentTransactions() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.4 }}
     >
-      <Card className="shadow-card">
+      <Card className={cn("shadow-card border", colorStyles.blue.border)}>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg font-semibold">Recent Transactions</CardTitle>
+          <CardTitle className={cn("text-lg font-semibold flex items-center gap-2", colorStyles.blue.text)}>
+            Recent Transactions
+          </CardTitle>
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-primary gap-1"
+            className={cn("gap-1", colorStyles.blue.text)}
             onClick={() => navigate('/dashboard/transactions')}
           >
             View All Transactions
@@ -115,10 +118,12 @@ export default function RecentTransactions() {
                     <div className="flex items-center gap-3">
                       <div className={cn(
                         "w-9 h-9 rounded-full flex items-center justify-center",
-                        txn.type === 'credit' ? "bg-success/10" : "bg-destructive/10"
+                        txn.type === 'credit' 
+                          ? cn(colorStyles.green.bg, colorStyles.green.border, "border") 
+                          : "bg-destructive/10 border border-destructive/30"
                       )}>
                         {txn.type === 'credit' ? (
-                          <ArrowDownLeft className="h-4 w-4 text-success" />
+                          <ArrowDownLeft className={cn("h-4 w-4", colorStyles.green.text)} />
                         ) : (
                           <ArrowUpRight className="h-4 w-4 text-destructive" />
                         )}
@@ -138,7 +143,7 @@ export default function RecentTransactions() {
                   <TableCell>
                     <p className={cn(
                       "font-semibold",
-                      txn.type === 'credit' ? "text-success" : "text-destructive"
+                      txn.type === 'credit' ? colorStyles.green.text : "text-destructive"
                     )}>
                       {txn.type === 'credit' ? '+' : '-'}₹{txn.amount.toLocaleString()}
                     </p>
@@ -148,8 +153,8 @@ export default function RecentTransactions() {
                       variant="outline"
                       className={cn(
                         "capitalize",
-                        txn.status === 'success' && "border-success text-success",
-                        txn.status === 'pending' && "border-warning text-warning",
+                        txn.status === 'success' && cn(colorStyles.green.border, colorStyles.green.text),
+                        txn.status === 'pending' && cn(colorStyles.yellow.border, colorStyles.yellow.text),
                         txn.status === 'failed' && "border-destructive text-destructive"
                       )}
                     >
@@ -159,7 +164,7 @@ export default function RecentTransactions() {
                   <TableCell className="text-right">
                     <Badge 
                       variant="secondary" 
-                      className="text-xs cursor-pointer hover:bg-primary/20"
+                      className={cn("text-xs cursor-pointer", colorStyles.blue.bg, colorStyles.blue.text, "hover:opacity-80")}
                       onClick={() => navigate(`/dashboard/transactions?id=${txn.id}`)}
                     >
                       View

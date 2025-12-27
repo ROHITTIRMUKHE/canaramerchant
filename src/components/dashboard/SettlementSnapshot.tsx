@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { Calendar, IndianRupee, Clock, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { colorStyles } from '@/lib/colorSchemes';
+import { cn } from '@/lib/utils';
 
 const settlementData = {
   lastDate: '22 Dec 2024',
@@ -17,34 +19,34 @@ export default function SettlementSnapshot() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
-      <Card className="shadow-card">
+      <Card className={cn("shadow-card border", colorStyles.green.border)}>
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            <IndianRupee className="h-5 w-5 text-primary" />
+          <CardTitle className={cn("text-lg font-semibold flex items-center gap-2", colorStyles.green.text)}>
+            <IndianRupee className="h-5 w-5" />
             Settlement Snapshot
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-4 rounded-lg bg-muted/50">
+            <div className={cn("p-4 rounded-lg border", colorStyles.blue.bg, colorStyles.blue.border)}>
               <div className="flex items-center gap-2 mb-2">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <Calendar className={cn("h-4 w-4", colorStyles.blue.text)} />
                 <span className="text-xs text-muted-foreground">Last Settlement</span>
               </div>
               <p className="font-semibold text-foreground">{settlementData.lastDate}</p>
             </div>
             
-            <div className="p-4 rounded-lg bg-muted/50">
+            <div className={cn("p-4 rounded-lg border", colorStyles.green.bg, colorStyles.green.border)}>
               <div className="flex items-center gap-2 mb-2">
-                <IndianRupee className="h-4 w-4 text-muted-foreground" />
+                <IndianRupee className={cn("h-4 w-4", colorStyles.green.text)} />
                 <span className="text-xs text-muted-foreground">Amount Settled</span>
               </div>
               <p className="font-semibold text-foreground">{settlementData.lastAmount}</p>
             </div>
             
-            <div className="p-4 rounded-lg bg-muted/50">
+            <div className={cn("p-4 rounded-lg border", colorStyles.purple.bg, colorStyles.purple.border)}>
               <div className="flex items-center gap-2 mb-2">
-                <CheckCircle className="h-4 w-4 text-muted-foreground" />
+                <CheckCircle className={cn("h-4 w-4", colorStyles.purple.text)} />
                 <span className="text-xs text-muted-foreground">Status</span>
               </div>
               <Badge variant="outline" className="border-success text-success">
@@ -52,9 +54,9 @@ export default function SettlementSnapshot() {
               </Badge>
             </div>
             
-            <div className="p-4 rounded-lg bg-muted/50">
+            <div className={cn("p-4 rounded-lg border", colorStyles.yellow.bg, colorStyles.yellow.border)}>
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="h-4 w-4 text-muted-foreground" />
+                <Clock className={cn("h-4 w-4", colorStyles.yellow.text)} />
                 <span className="text-xs text-muted-foreground">Next Expected</span>
               </div>
               <p className="font-semibold text-foreground">{settlementData.nextExpected}</p>
