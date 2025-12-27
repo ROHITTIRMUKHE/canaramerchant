@@ -9,6 +9,7 @@ import BusinessTrendChart from '@/components/dashboard/BusinessTrendChart';
 import RecentTransactions from '@/components/dashboard/RecentTransactions';
 import QuickActionsPanel from '@/components/dashboard/QuickActionsPanel';
 import { getActiveSubMerchantsCount } from '@/data/subMerchants';
+import { useLanguage } from '@/lib/i18n';
 
 // Mock role - in real app this would come from auth context
 const isMainMerchant = true;
@@ -39,6 +40,8 @@ const kpiData = {
 };
 
 export default function Dashboard() {
+  const { t } = useLanguage();
+  
   return (
     <div className="flex h-screen bg-background">
       <DashboardSidebar />
@@ -55,17 +58,17 @@ export default function Dashboard() {
             {/* Welcome Section */}
             <div className="mb-8">
               <h1 className="text-2xl font-bold text-foreground mb-2">
-                Welcome back, Merchant Store
+                {t.dashboard.welcomeBack}, Merchant Store
               </h1>
               <p className="text-muted-foreground">
-                Here's your business overview for today.
+                {t.dashboard.businessOverview}
               </p>
             </div>
 
             {/* KPI Cards Grid */}
             <div className={`grid grid-cols-1 md:grid-cols-2 ${isMainMerchant ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-6 mb-8`}>
               <KPICard
-                title="Today's Collection"
+                title={t.dashboard.todaysCollection}
                 value={kpiData.todaysCollection.value}
                 change={kpiData.todaysCollection.change}
                 changeType={kpiData.todaysCollection.changeType}
@@ -75,9 +78,9 @@ export default function Dashboard() {
                 colorScheme="blue"
               />
               <KPICard
-                title="Today's Settlements"
+                title={t.dashboard.todaysSettlements}
                 value={kpiData.todaysSettlements.value}
-                subtitle={`Status: ${kpiData.todaysSettlements.status}`}
+                subtitle={`${t.dashboard.status}: ${kpiData.todaysSettlements.status}`}
                 changeType={kpiData.todaysSettlements.changeType}
                 icon={Banknote}
                 navigateTo="/dashboard/settlements"
@@ -85,9 +88,9 @@ export default function Dashboard() {
                 colorScheme="green"
               />
               <KPICard
-                title="Pending Actions"
+                title={t.dashboard.pendingActions}
                 value={String(kpiData.pendingActions.count)}
-                subtitle={kpiData.pendingActions.details}
+                subtitle={`${kpiData.pendingActions.count} ${t.dashboard.itemsNeedAttention}`}
                 icon={AlertCircle}
                 navigateTo="/dashboard/refunds"
                 delay={0.2}
@@ -95,7 +98,7 @@ export default function Dashboard() {
               />
               {isMainMerchant && (
                 <KPICard
-                  title="Active Sub-Merchants"
+                  title={t.dashboard.activeSubMerchants}
                   value={String(kpiData.activeSubMerchants.count)}
                   change={kpiData.activeSubMerchants.change}
                   changeType="positive"

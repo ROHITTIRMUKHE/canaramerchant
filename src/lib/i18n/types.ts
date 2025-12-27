@@ -177,5 +177,27 @@ export interface Translations {
     viewProfile: string;
     bankDetails: string;
     apiKeys: string;
+    welcomeBack: string;
+    businessOverview: string;
+    todaysCollection: string;
+    todaysSettlements: string;
+    pendingActions: string;
+    activeSubMerchants: string;
+    status: string;
+    itemsNeedAttention: string;
+    // Sidebar navigation
+    sidebar: {
+      overview: string;
+      transactions: string;
+      qrManagement: string;
+      subMerchants: string;
+      settlements: string;
+      reports: string;
+      refundsDisputes: string;
+      profileSettings: string;
+      canaraSupport: string;
+      logout: string;
+      merchantPortal: string;
+    };
   };
 }
