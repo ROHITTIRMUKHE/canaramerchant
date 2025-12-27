@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import GradientMeshBackground from '@/components/landing/GradientMeshBackground';
 import PaymentVisualization from '@/components/landing/PaymentVisualization';
 import TrustIndicators from '@/components/landing/TrustIndicators';
@@ -8,9 +8,11 @@ import FloatingElements from '@/components/landing/FloatingElements';
 import FeaturesSection from '@/components/landing/FeaturesSection';
 import StatsSection from '@/components/landing/StatsSection';
 import ThemeToggle from '@/components/ThemeToggle';
+import PCIDSSModal from '@/components/landing/PCIDSSModal';
 import canaraBankLogo from '@/assets/canara-bank-logo.png';
 
 export default function Landing() {
+  const [pciModalOpen, setPciModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
   
@@ -155,11 +157,12 @@ export default function Landing() {
               </div>
 
               <div className="flex items-center gap-6 text-xs text-muted-foreground">
-                <span>Powered by NPCI</span>
-                <span>•</span>
-                <span>RBI Regulated</span>
-                <span>•</span>
-                <span>PCI DSS Compliant</span>
+                <button
+                  onClick={() => setPciModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer"
+                >
+                  PCI-DSS Compliant
+                </button>
               </div>
 
               <div className="flex items-center gap-4 text-xs">
@@ -173,6 +176,8 @@ export default function Landing() {
           </div>
         </footer>
       </div>
+
+      <PCIDSSModal open={pciModalOpen} onOpenChange={setPciModalOpen} />
     </div>
   );
 }
