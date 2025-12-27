@@ -162,31 +162,28 @@ export default function Landing() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-6 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center justify-center gap-3 text-xs">
                 <button
                   onClick={() => setPciModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer"
+                  className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer whitespace-nowrap"
                 >
                   PCI-DSS Compliant
                 </button>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center gap-3 text-xs">
                 <button
                   onClick={() => setPrivacyModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer"
+                  className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer whitespace-nowrap"
                 >
                   Privacy Policy
                 </button>
                 <button
                   onClick={() => setTermsModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer"
+                  className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer whitespace-nowrap"
                 >
                   Terms of Service
                 </button>
                 <button
                   onClick={() => setContactModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer"
+                  className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer whitespace-nowrap"
                 >
                   Contact Support
                 </button>
