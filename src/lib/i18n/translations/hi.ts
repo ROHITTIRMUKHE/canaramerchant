@@ -32,6 +32,33 @@ export const hi: Translations = {
     contactSupport: 'सहायता संपर्क',
     copyright: '© 2024 केनरा बैंक। सर्वाधिकार सुरक्षित।',
     upiMerchantSolutions: 'UPI व्यापारी समाधान',
+    // Features section
+    whyChoose: 'क्यों चुनें',
+    whyChooseBank: 'केनरा बैंक',
+    whyChooseUpi: 'UPI?',
+    trustedByMerchants: 'सुरक्षित, विश्वसनीय UPI भुगतान के लिए भारत भर में 2 लाख से अधिक व्यापारियों द्वारा विश्वसनीय।',
+    features: {
+      instantQr: { title: 'तत्काल QR भुगतान', description: 'डायनामिक QR कोड के साथ तुरंत भुगतान स्वीकार करें। कोई हार्डवेयर नहीं चाहिए।' },
+      realTimeSettlements: { title: 'रीयल-टाइम निपटान', description: 'दिनों में नहीं, घंटों में अपना पैसा पाएं। आपके व्यवसाय के लिए तेज़ नकदी प्रवाह।' },
+      bankGradeSecurity: { title: 'बैंक-ग्रेड सुरक्षा', description: 'केनरा बैंक के एंटरप्राइज़ सुरक्षा बुनियादी ढांचे द्वारा संरक्षित।' },
+      smartAnalytics: { title: 'स्मार्ट एनालिटिक्स', description: 'विस्तृत अंतर्दृष्टि और रिपोर्ट के साथ हर लेनदेन को ट्रैक करें।' },
+      multiDevice: { title: 'मल्टी-डिवाइस एक्सेस', description: 'कहीं भी, किसी भी समय, किसी भी डिवाइस से अपने भुगतान प्रबंधित करें।' },
+      lowFees: { title: 'कम लेनदेन शुल्क', description: 'प्रतिस्पर्धी दरें जो आपको अपनी कमाई का अधिक हिस्सा रखने में मदद करती हैं।' },
+    },
+    // Stats section
+    stats: {
+      dailyVolume: 'दैनिक लेनदेन मात्रा',
+      activeMerchants: 'सक्रिय व्यापारी',
+      platformUptime: 'प्लेटफ़ॉर्म अपटाइम',
+      avgSettlementTime: 'औसत निपटान समय',
+    },
+    // Trust indicators
+    trustIndicators: {
+      dailyVolume: 'दैनिक मात्रा',
+      merchants: 'व्यापारी',
+      uptime: 'अपटाइम',
+      certified: 'प्रमाणित',
+    },
   },
   login: {
     title: 'व्यापारी लॉगिन',

@@ -1,13 +1,7 @@
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { useMouseParallax } from '@/hooks/useMouseParallax';
-
-const stats = [
-  { value: 500, suffix: 'Cr+', label: 'Daily Transaction Volume', prefix: '₹', color: 'hsl(198 93% 59%)' },
-  { value: 200000, suffix: '+', label: 'Active Merchants', prefix: '', color: 'hsl(145 65% 50%)' },
-  { value: 99.9, suffix: '%', label: 'Platform Uptime', prefix: '', color: 'hsl(280 80% 60%)' },
-  { value: 1, suffix: 'sec', label: 'Avg Settlement Time', prefix: '<', color: 'hsl(35 92% 50%)' },
-];
+import { useLanguage } from '@/lib/i18n';
 
 function AnimatedCounter({ value, suffix, prefix, color }: { value: number; suffix: string; prefix: string; color: string }) {
   const [count, setCount] = useState(0);
@@ -48,12 +42,20 @@ function AnimatedCounter({ value, suffix, prefix, color }: { value: number; suff
 }
 
 export default function StatsSection() {
+  const { t } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { normalizedX, normalizedY } = useMouseParallax();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.95]);
   const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [5, 0, -5]);
+
+  const stats = [
+    { value: 500, suffix: 'Cr+', label: t.landing.stats.dailyVolume, prefix: '₹', color: 'hsl(198 93% 59%)' },
+    { value: 200000, suffix: '+', label: t.landing.stats.activeMerchants, prefix: '', color: 'hsl(145 65% 50%)' },
+    { value: 99.9, suffix: '%', label: t.landing.stats.platformUptime, prefix: '', color: 'hsl(280 80% 60%)' },
+    { value: 1, suffix: 'sec', label: t.landing.stats.avgSettlementTime, prefix: '<', color: 'hsl(35 92% 50%)' },
+  ];
 
   return (
     <section ref={ref} className="py-20 px-6 lg:px-16 relative z-10">

@@ -32,6 +32,33 @@ export const kn: Translations = {
     contactSupport: 'ಬೆಂಬಲ ಸಂಪರ್ಕಿಸಿ',
     copyright: '© 2024 ಕೆನರಾ ಬ್ಯಾಂಕ್. ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.',
     upiMerchantSolutions: 'UPI ವ್ಯಾಪಾರಿ ಪರಿಹಾರಗಳು',
+    // Features section
+    whyChoose: 'ಏಕೆ ಆಯ್ಕೆ ಮಾಡಿ',
+    whyChooseBank: 'ಕೆನರಾ ಬ್ಯಾಂಕ್',
+    whyChooseUpi: 'UPI?',
+    trustedByMerchants: 'ಸುರಕ್ಷಿತ, ವಿಶ್ವಾಸಾರ್ಹ UPI ಪಾವತಿಗಳಿಗಾಗಿ ಭಾರತದಾದ್ಯಂತ 2 ಲಕ್ಷಕ್ಕೂ ಹೆಚ್ಚು ವ್ಯಾಪಾರಿಗಳು ನಂಬಿದ್ದಾರೆ.',
+    features: {
+      instantQr: { title: 'ತಕ್ಷಣ QR ಪಾವತಿಗಳು', description: 'ಡೈನಾಮಿಕ್ QR ಕೋಡ್‌ಗಳೊಂದಿಗೆ ತಕ್ಷಣವೇ ಪಾವತಿಗಳನ್ನು ಸ್ವೀಕರಿಸಿ. ಯಾವುದೇ ಹಾರ್ಡ್‌ವೇರ್ ಅಗತ್ಯವಿಲ್ಲ.' },
+      realTimeSettlements: { title: 'ನೈಜ-ಸಮಯದ ಇತ್ಯರ್ಥಗಳು', description: 'ದಿನಗಳಲ್ಲ, ಗಂಟೆಗಳಲ್ಲಿ ನಿಮ್ಮ ಹಣವನ್ನು ಪಡೆಯಿರಿ. ನಿಮ್ಮ ವ್ಯವಹಾರಕ್ಕೆ ವೇಗವಾದ ನಗದು ಹರಿವು.' },
+      bankGradeSecurity: { title: 'ಬ್ಯಾಂಕ್-ಗ್ರೇಡ್ ಭದ್ರತೆ', description: 'ಕೆನರಾ ಬ್ಯಾಂಕ್‌ನ ಎಂಟರ್‌ಪ್ರೈಸ್ ಭದ್ರತಾ ಮೂಲಸೌಕರ್ಯದಿಂದ ರಕ್ಷಿಸಲಾಗಿದೆ.' },
+      smartAnalytics: { title: 'ಸ್ಮಾರ್ಟ್ ಅನಾಲಿಟಿಕ್ಸ್', description: 'ವಿವರವಾದ ಒಳನೋಟಗಳು ಮತ್ತು ವರದಿಗಳೊಂದಿಗೆ ಪ್ರತಿ ವಹಿವಾಟನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ.' },
+      multiDevice: { title: 'ಮಲ್ಟಿ-ಡಿವೈಸ್ ಪ್ರವೇಶ', description: 'ಯಾವುದೇ ಸಾಧನದಿಂದ, ಎಲ್ಲಿಯಾದರೂ, ಯಾವಾಗಲಾದರೂ ನಿಮ್ಮ ಪಾವತಿಗಳನ್ನು ನಿರ್ವಹಿಸಿ.' },
+      lowFees: { title: 'ಕಡಿಮೆ ವಹಿವಾಟು ಶುಲ್ಕಗಳು', description: 'ನೀವು ಗಳಿಸಿದ್ದನ್ನು ಹೆಚ್ಚು ಉಳಿಸಿಕೊಳ್ಳಲು ಸಹಾಯ ಮಾಡುವ ಸ್ಪರ್ಧಾತ್ಮಕ ದರಗಳು.' },
+    },
+    // Stats section
+    stats: {
+      dailyVolume: 'ದೈನಂದಿನ ವಹಿವಾಟು ಪರಿಮಾಣ',
+      activeMerchants: 'ಸಕ್ರಿಯ ವ್ಯಾಪಾರಿಗಳು',
+      platformUptime: 'ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಅಪ್‌ಟೈಮ್',
+      avgSettlementTime: 'ಸರಾಸರಿ ಇತ್ಯರ್ಥ ಸಮಯ',
+    },
+    // Trust indicators
+    trustIndicators: {
+      dailyVolume: 'ದೈನಂದಿನ ಪರಿಮಾಣ',
+      merchants: 'ವ್ಯಾಪಾರಿಗಳು',
+      uptime: 'ಅಪ್‌ಟೈಮ್',
+      certified: 'ಪ್ರಮಾಣೀಕೃತ',
+    },
   },
   login: {
     title: 'ವ್ಯಾಪಾರಿ ಲಾಗಿನ್',

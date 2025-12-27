@@ -2,59 +2,61 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { CreditCard, Shield, Zap, BarChart3, QrCode, Smartphone } from 'lucide-react';
 import canaraBankLogo from '@/assets/canara-bank-logo.png';
-
-const features = [
-  {
-    icon: QrCode,
-    title: 'Instant QR Payments',
-    description: 'Accept payments instantly with dynamic QR codes. No hardware needed.',
-    color: 'hsl(198 93% 59%)',
-    gradient: 'from-[hsl(198,93%,59%)] to-[hsl(198,93%,45%)]'
-  },
-  {
-    icon: Zap,
-    title: 'Real-time Settlements',
-    description: 'Get your money within hours, not days. Faster cash flow for your business.',
-    color: 'hsl(35 92% 50%)',
-    gradient: 'from-[hsl(35,92%,50%)] to-[hsl(25,90%,45%)]'
-  },
-  {
-    icon: Shield,
-    title: 'Bank-grade Security',
-    description: 'Protected by Canara Bank\'s enterprise security infrastructure.',
-    color: 'hsl(145 65% 50%)',
-    gradient: 'from-[hsl(145,65%,50%)] to-[hsl(145,65%,40%)]'
-  },
-  {
-    icon: BarChart3,
-    title: 'Smart Analytics',
-    description: 'Track every transaction with detailed insights and reports.',
-    color: 'hsl(280 80% 60%)',
-    gradient: 'from-[hsl(280,80%,60%)] to-[hsl(280,80%,50%)]'
-  },
-  {
-    icon: Smartphone,
-    title: 'Multi-device Access',
-    description: 'Manage your payments from any device, anywhere, anytime.',
-    color: 'hsl(320 70% 55%)',
-    gradient: 'from-[hsl(320,70%,55%)] to-[hsl(320,70%,45%)]'
-  },
-  {
-    icon: CreditCard,
-    title: 'Low Transaction Fees',
-    description: 'Competitive rates that help you keep more of what you earn.',
-    color: 'hsl(198 93% 59%)',
-    gradient: 'from-[hsl(198,93%,59%)] to-[hsl(220,80%,50%)]'
-  },
-];
+import { useLanguage } from '@/lib/i18n';
 
 export default function FeaturesSection() {
+  const { t } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const features = [
+    {
+      icon: QrCode,
+      title: t.landing.features.instantQr.title,
+      description: t.landing.features.instantQr.description,
+      color: 'hsl(198 93% 59%)',
+      gradient: 'from-[hsl(198,93%,59%)] to-[hsl(198,93%,45%)]'
+    },
+    {
+      icon: Zap,
+      title: t.landing.features.realTimeSettlements.title,
+      description: t.landing.features.realTimeSettlements.description,
+      color: 'hsl(35 92% 50%)',
+      gradient: 'from-[hsl(35,92%,50%)] to-[hsl(25,90%,45%)]'
+    },
+    {
+      icon: Shield,
+      title: t.landing.features.bankGradeSecurity.title,
+      description: t.landing.features.bankGradeSecurity.description,
+      color: 'hsl(145 65% 50%)',
+      gradient: 'from-[hsl(145,65%,50%)] to-[hsl(145,65%,40%)]'
+    },
+    {
+      icon: BarChart3,
+      title: t.landing.features.smartAnalytics.title,
+      description: t.landing.features.smartAnalytics.description,
+      color: 'hsl(280 80% 60%)',
+      gradient: 'from-[hsl(280,80%,60%)] to-[hsl(280,80%,50%)]'
+    },
+    {
+      icon: Smartphone,
+      title: t.landing.features.multiDevice.title,
+      description: t.landing.features.multiDevice.description,
+      color: 'hsl(320 70% 55%)',
+      gradient: 'from-[hsl(320,70%,55%)] to-[hsl(320,70%,45%)]'
+    },
+    {
+      icon: CreditCard,
+      title: t.landing.features.lowFees.title,
+      description: t.landing.features.lowFees.description,
+      color: 'hsl(198 93% 59%)',
+      gradient: 'from-[hsl(198,93%,59%)] to-[hsl(220,80%,50%)]'
+    },
+  ];
 
   return (
     <section ref={ref} className="py-24 px-6 lg:px-16 relative z-10 overflow-hidden">
@@ -82,14 +84,14 @@ export default function FeaturesSection() {
             <img src={canaraBankLogo} alt="Canara Bank" className="h-10 w-auto" />
           </motion.div>
           <h2 className="text-3xl lg:text-5xl font-bold text-foreground mb-4">
-            Why Choose{' '}
+            {t.landing.whyChoose}{' '}
             <span className="bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(280,80%,60%)] to-[hsl(35,92%,50%)] bg-clip-text text-transparent">
-              Canara Bank
+              {t.landing.whyChooseBank}
             </span>{' '}
-            UPI?
+            {t.landing.whyChooseUpi}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Trusted by over 2 lakh merchants across India for secure, reliable UPI payments.
+            {t.landing.trustedByMerchants}
           </p>
         </motion.div>
 
@@ -100,7 +102,7 @@ export default function FeaturesSection() {
         >
           {features.map((feature, index) => (
             <motion.div
-              key={feature.title}
+              key={index}
               className="group relative p-6 rounded-2xl backdrop-blur-sm border transition-all duration-500 cursor-pointer"
               style={{
                 background: hoveredIndex === index 

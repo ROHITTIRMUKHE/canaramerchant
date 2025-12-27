@@ -46,6 +46,33 @@ export interface Translations {
     contactSupport: string;
     copyright: string;
     upiMerchantSolutions: string;
+    // Features section
+    whyChoose: string;
+    whyChooseBank: string;
+    whyChooseUpi: string;
+    trustedByMerchants: string;
+    features: {
+      instantQr: { title: string; description: string };
+      realTimeSettlements: { title: string; description: string };
+      bankGradeSecurity: { title: string; description: string };
+      smartAnalytics: { title: string; description: string };
+      multiDevice: { title: string; description: string };
+      lowFees: { title: string; description: string };
+    };
+    // Stats section
+    stats: {
+      dailyVolume: string;
+      activeMerchants: string;
+      platformUptime: string;
+      avgSettlementTime: string;
+    };
+    // Trust indicators
+    trustIndicators: {
+      dailyVolume: string;
+      merchants: string;
+      uptime: string;
+      certified: string;
+    };
   };
   login: {
     title: string;
