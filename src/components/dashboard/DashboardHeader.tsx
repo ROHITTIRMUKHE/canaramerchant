@@ -17,7 +17,10 @@ import {
   Plus,
   Download,
   Eye,
-  ArrowRight
+  ArrowRight,
+  CreditCard,
+  Key,
+  LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -45,7 +48,9 @@ const searchableItems = [
   { type: 'page', label: 'Refunds & Disputes', description: 'Manage refunds and disputes', path: '/dashboard/refunds', icon: RefreshCcw, keywords: ['refund', 'dispute', 'chargeback', 'return'] },
   { type: 'page', label: 'Reports', description: 'Generate and download reports', path: '/dashboard/reports', icon: TrendingUp, keywords: ['report', 'analytics', 'export', 'download'] },
   { type: 'page', label: 'Support', description: 'Get help and support', path: '/dashboard/support', icon: HelpCircle, keywords: ['help', 'support', 'contact', 'ticket'] },
-  { type: 'page', label: 'Profile Settings', description: 'Manage your profile', path: '/dashboard/settings', icon: Settings, keywords: ['profile', 'settings', 'account', 'password'] },
+  { type: 'page', label: 'Profile Settings', description: 'Manage your profile', path: '/dashboard/settings?section=profile', icon: Settings, keywords: ['profile', 'settings', 'account', 'password'] },
+  { type: 'page', label: 'Bank Details', description: 'View settlement account info', path: '/dashboard/settings?section=bank', icon: CreditCard, keywords: ['bank', 'account', 'settlement', 'ifsc'] },
+  { type: 'page', label: 'API Keys', description: 'Manage API and integrations', path: '/dashboard/settings?section=api', icon: Key, keywords: ['api', 'key', 'webhook', 'integration'] },
   
   // Quick Actions/Features
   { type: 'action', label: 'Create New QR Code', description: 'Generate a new static or dynamic QR', path: '/dashboard/qr', icon: Plus, keywords: ['create', 'new', 'qr', 'generate'] },
@@ -55,6 +60,7 @@ const searchableItems = [
   { type: 'action', label: 'Download Settlement Report', description: 'Export settlement data', path: '/dashboard/settlements', icon: Download, keywords: ['download', 'export', 'settlement', 'report'] },
   { type: 'action', label: 'View Business Summary', description: 'Check cumulative business', path: '/dashboard/settlements', icon: Eye, keywords: ['view', 'summary', 'business', 'overview'] },
   { type: 'action', label: 'Check Transaction Status', description: 'Track a specific transaction', path: '/dashboard/transactions', icon: Search, keywords: ['check', 'status', 'transaction', 'track'] },
+  { type: 'action', label: 'Regenerate API Key', description: 'Generate new API credentials', path: '/dashboard/settings?section=api', icon: Key, keywords: ['regenerate', 'api', 'key', 'new'] },
   { type: 'action', label: 'Generate Daily Report', description: 'Create daily transaction report', path: '/dashboard/reports', icon: FileText, keywords: ['generate', 'daily', 'report', 'transactions'] },
 ];
 
@@ -317,7 +323,7 @@ export default function DashboardHeader() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Profile */}
+        {/* Profile / Merchant Store Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-3 px-2">
@@ -332,17 +338,29 @@ export default function DashboardHeader() {
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel className="flex flex-col">
+              <span>ABC Traders Pvt Ltd</span>
+              <span className="text-xs font-normal text-muted-foreground">MID: CANARAXXXX1234</span>
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate('/dashboard/profile')}>
+            <DropdownMenuItem onClick={() => navigate('/dashboard/settings?section=profile')} className="cursor-pointer">
               <User className="h-4 w-4 mr-2" />
               Profile Settings
             </DropdownMenuItem>
-            <DropdownMenuItem>Bank Details</DropdownMenuItem>
-            <DropdownMenuItem>API Keys</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate('/dashboard/settings?section=bank')} className="cursor-pointer">
+              <CreditCard className="h-4 w-4 mr-2" />
+              Bank Details
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate('/dashboard/settings?section=api')} className="cursor-pointer">
+              <Key className="h-4 w-4 mr-2" />
+              API Keys
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">Logout</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive cursor-pointer">
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
