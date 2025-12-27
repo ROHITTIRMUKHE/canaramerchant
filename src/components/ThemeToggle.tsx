@@ -14,18 +14,18 @@ export default function ThemeToggle() {
     >
       <motion.div
         className="absolute w-6 h-6 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg"
-        animate={{ x: theme === 'dark' ? 0 : 24 }}
+        animate={{ x: theme === 'light' ? 0 : 24 }}
         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
       >
-        {theme === 'dark' ? (
-          <Moon className="w-3.5 h-3.5 text-primary-foreground" />
-        ) : (
+        {theme === 'light' ? (
           <Sun className="w-3.5 h-3.5 text-primary-foreground" />
+        ) : (
+          <Moon className="w-3.5 h-3.5 text-primary-foreground" />
         )}
       </motion.div>
       <div className="flex justify-between items-center px-1">
-        <Moon className="w-3 h-3 text-muted-foreground" />
         <Sun className="w-3 h-3 text-muted-foreground" />
+        <Moon className="w-3 h-3 text-muted-foreground" />
       </div>
     </motion.button>
   );
