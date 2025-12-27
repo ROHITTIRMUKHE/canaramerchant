@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,13 +11,11 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   User, 
   Building2, 
   Phone, 
-  Mail, 
   MapPin, 
   CreditCard, 
   Shield, 
@@ -26,24 +25,23 @@ import {
   Settings, 
   FileText, 
   Users, 
-  Clock, 
   CheckCircle, 
-  AlertCircle, 
   Eye, 
   EyeOff,
   Copy,
   RefreshCw,
   LogOut,
   Globe,
-  Calendar,
   Smartphone,
   Laptop,
   History,
   Download,
   Edit,
-  Lock
+  Lock,
+  ChevronRight
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Sample data for Profile
 const merchantProfile = {
@@ -108,11 +106,30 @@ const activeSessions = [
   { id: 3, device: 'Firefox on MacOS', location: 'Mumbai, India', lastActive: '1 day ago', current: false },
 ];
 
+// Section tabs mapping
+const sectionTabs = [
+  { id: 'profile', label: 'Profile Information', icon: User, description: 'Merchant details, contact & KYC' },
+  { id: 'bank', label: 'Bank Details', icon: CreditCard, description: 'Settlement account information' },
+  { id: 'api', label: 'API & Integration', icon: Key, description: 'API keys, webhooks & IP whitelist' },
+  { id: 'security', label: 'Security & Preferences', icon: Shield, description: 'Settings, sessions & audit logs' },
+];
+
 export default function ProfileSettings() {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('profile');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  
+  // Get initial section from URL or default to 'profile'
+  const sectionParam = searchParams.get('section') || 'profile';
+  const [activeSection, setActiveSection] = useState(sectionParam);
+  
   const [showApiKey, setShowApiKey] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<string | null>(null);
+  
+  // Refs for section highlighting
+  const bankRef = useRef<HTMLDivElement>(null);
+  const apiRef = useRef<HTMLDivElement>(null);
+  const [highlightedSection, setHighlightedSection] = useState<string | null>(null);
   
   // Settings state
   const [settings, setSettings] = useState({
@@ -148,6 +165,25 @@ export default function ProfileSettings() {
     termsDate: '15-Mar-2023',
     dataPrivacyConsent: true,
   });
+
+  // Handle URL changes and highlight section
+  useEffect(() => {
+    const section = searchParams.get('section');
+    if (section && ['profile', 'bank', 'api', 'security'].includes(section)) {
+      setActiveSection(section);
+      setHighlightedSection(section);
+      
+      // Clear highlight after animation
+      const timer = setTimeout(() => setHighlightedSection(null), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
+
+  // Update URL when section changes
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section);
+    setSearchParams({ section });
+  };
 
   const handleSettingChange = (key: string, value: any) => {
     setSettings(prev => ({ ...prev, [key]: value }));
@@ -223,6 +259,9 @@ export default function ProfileSettings() {
     return <Badge variant="outline" className={config.className}>{status}</Badge>;
   };
 
+  // Get section label for breadcrumb
+  const currentSectionLabel = sectionTabs.find(s => s.id === activeSection)?.label || 'Profile Information';
+
   return (
     <div className="flex min-h-screen bg-background">
       <DashboardSidebar />
@@ -230,34 +269,41 @@ export default function ProfileSettings() {
         <DashboardHeader />
         <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-6xl mx-auto space-y-6">
-            {/* Page Header */}
+            {/* Page Header with Breadcrumb */}
             <div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+                <span>Profile & Settings</span>
+                <ChevronRight className="h-4 w-4" />
+                <span className="text-foreground font-medium">{currentSectionLabel}</span>
+              </div>
               <h1 className="text-2xl font-bold text-foreground">Profile & Settings</h1>
               <p className="text-muted-foreground">Manage your merchant profile and preferences</p>
             </div>
 
-            {/* Main Tabs */}
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-              <TabsList className="bg-muted/50 p-1">
-                <TabsTrigger value="profile" className="data-[state=active]:bg-background">
-                  <User className="h-4 w-4 mr-2" />
-                  Profile
-                </TabsTrigger>
-                <TabsTrigger value="settings" className="data-[state=active]:bg-background">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Settings
-                </TabsTrigger>
-                <TabsTrigger value="audit" className="data-[state=active]:bg-background">
-                  <History className="h-4 w-4 mr-2" />
-                  Audit Logs
-                </TabsTrigger>
+            {/* Section Tabs */}
+            <Tabs value={activeSection} onValueChange={handleSectionChange} className="space-y-6">
+              <TabsList className="bg-muted/50 p-1 h-auto flex-wrap">
+                {sectionTabs.map((tab) => (
+                  <TabsTrigger 
+                    key={tab.id} 
+                    value={tab.id} 
+                    className="data-[state=active]:bg-background flex items-center gap-2 px-4 py-2"
+                  >
+                    <tab.icon className="h-4 w-4" />
+                    <span className="hidden sm:inline">{tab.label}</span>
+                  </TabsTrigger>
+                ))}
               </TabsList>
 
-              {/* Profile Tab */}
+              {/* Profile Information Tab */}
               <TabsContent value="profile" className="space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                >
                   {/* Basic Information */}
-                  <Card>
+                  <Card className={highlightedSection === 'profile' ? 'ring-2 ring-primary' : ''}>
                     <CardHeader className="pb-3">
                       <div className="flex items-center gap-2">
                         <Building2 className="h-5 w-5 text-primary" />
@@ -359,57 +405,228 @@ export default function ProfileSettings() {
                     </CardContent>
                   </Card>
 
-                  {/* Settlement Account Details */}
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-2">
-                        <CreditCard className="h-5 w-5 text-primary" />
-                        <CardTitle className="text-lg">Settlement Account Details</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-1">
-                      <InfoRow label="Bank Name" value={merchantProfile.settlement.bankName} />
-                      <Separator />
-                      <InfoRow label="Account Number" value={merchantProfile.settlement.accountNumber} masked />
-                      <Separator />
-                      <InfoRow label="IFSC Code" value={merchantProfile.settlement.ifsc} />
-                      <Separator />
-                      <InfoRow label="Account Holder Name" value={merchantProfile.settlement.accountHolder} />
-                      <Separator />
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-muted-foreground text-sm">Settlement Cycle</span>
-                        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">{merchantProfile.settlement.cycle}</Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-
                   {/* KYC & Compliance */}
-                  <Card>
+                  <Card className="lg:col-span-2">
                     <CardHeader className="pb-3">
                       <div className="flex items-center gap-2">
                         <Shield className="h-5 w-5 text-primary" />
                         <CardTitle className="text-lg">KYC & Compliance</CardTitle>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-1">
-                      <InfoRow label="PAN" value={merchantProfile.kyc.pan} masked />
-                      <Separator />
-                      <InfoRow label="GSTIN" value={merchantProfile.kyc.gstin} masked />
-                      <Separator />
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-muted-foreground text-sm">KYC Status</span>
-                        <StatusBadge status={merchantProfile.kyc.status} />
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div className="space-y-1">
+                          <span className="text-muted-foreground text-sm">PAN</span>
+                          <p className="font-medium">{merchantProfile.kyc.pan}</p>
+                        </div>
+                        <div className="space-y-1">
+                          <span className="text-muted-foreground text-sm">GSTIN</span>
+                          <p className="font-medium">{merchantProfile.kyc.gstin}</p>
+                        </div>
+                        <div className="space-y-1">
+                          <span className="text-muted-foreground text-sm">KYC Status</span>
+                          <div><StatusBadge status={merchantProfile.kyc.status} /></div>
+                        </div>
+                        <div className="space-y-1">
+                          <span className="text-muted-foreground text-sm">Last Updated</span>
+                          <p className="font-medium">{merchantProfile.kyc.lastUpdated}</p>
+                        </div>
                       </div>
-                      <Separator />
-                      <InfoRow label="Last KYC Updated" value={merchantProfile.kyc.lastUpdated} />
                     </CardContent>
                   </Card>
-                </div>
+                </motion.div>
               </TabsContent>
 
-              {/* Settings Tab */}
-              <TabsContent value="settings" className="space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Bank Details Tab */}
+              <TabsContent value="bank" className="space-y-6">
+                <motion.div
+                  ref={bankRef}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`transition-all duration-300 ${highlightedSection === 'bank' ? 'ring-2 ring-primary rounded-lg' : ''}`}
+                >
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <CreditCard className="h-5 w-5 text-primary" />
+                          <CardTitle className="text-lg">Settlement Account Details</CardTitle>
+                        </div>
+                        <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                          <CheckCircle className="h-3 w-3 mr-1" />
+                          Verified
+                        </Badge>
+                      </div>
+                      <CardDescription>Your settlement bank account where funds will be credited</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <div className="p-4 bg-muted/50 rounded-lg space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span className="text-muted-foreground text-sm">Settlement Bank Name</span>
+                              <span className="font-medium">{merchantProfile.settlement.bankName}</span>
+                            </div>
+                            <Separator />
+                            <div className="flex justify-between items-center">
+                              <span className="text-muted-foreground text-sm">Account Number</span>
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium font-mono">{merchantProfile.settlement.accountNumber}</span>
+                                <Badge variant="secondary" className="text-xs">Masked</Badge>
+                              </div>
+                            </div>
+                            <Separator />
+                            <div className="flex justify-between items-center">
+                              <span className="text-muted-foreground text-sm">IFSC Code</span>
+                              <span className="font-medium font-mono">{merchantProfile.settlement.ifsc}</span>
+                            </div>
+                            <Separator />
+                            <div className="flex justify-between items-center">
+                              <span className="text-muted-foreground text-sm">Account Holder Name</span>
+                              <span className="font-medium">{merchantProfile.settlement.accountHolder}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-4">
+                          <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span className="text-muted-foreground text-sm">Settlement Cycle</span>
+                              <Badge className="bg-primary text-primary-foreground">{merchantProfile.settlement.cycle}</Badge>
+                            </div>
+                            <Separator />
+                            <div className="flex justify-between items-center">
+                              <span className="text-muted-foreground text-sm">Next Settlement</span>
+                              <span className="font-medium text-primary">Tomorrow, 10:00 AM</span>
+                            </div>
+                            <Separator />
+                            <div className="flex justify-between items-center">
+                              <span className="text-muted-foreground text-sm">Pending Amount</span>
+                              <span className="font-bold text-lg">₹45,250.00</span>
+                            </div>
+                          </div>
+                          
+                          <Button variant="outline" className="w-full">
+                            <Edit className="h-4 w-4 mr-2" />
+                            Request Settlement Account Change
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </TabsContent>
+
+              {/* API & Integration Tab */}
+              <TabsContent value="api" className="space-y-6">
+                <motion.div
+                  ref={apiRef}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`space-y-6 ${highlightedSection === 'api' ? 'ring-2 ring-primary rounded-lg p-4' : ''}`}
+                >
+                  {/* API Status Card */}
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Key className="h-5 w-5 text-primary" />
+                          <CardTitle className="text-lg">API Access</CardTitle>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground">API Status</span>
+                          <Switch 
+                            checked={settings.apiEnabled} 
+                            onCheckedChange={(v) => handleSettingChange('apiEnabled', v)} 
+                          />
+                        </div>
+                      </div>
+                      <CardDescription>Manage your API credentials and integration settings</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      {/* API Key Section */}
+                      <div className="space-y-3">
+                        <Label className="text-base font-medium">API Key</Label>
+                        <div className="flex items-center gap-2">
+                          <Input 
+                            type={showApiKey ? 'text' : 'password'} 
+                            value={settings.apiKey} 
+                            readOnly 
+                            className="font-mono text-sm flex-1"
+                          />
+                          <Button variant="ghost" size="icon" onClick={() => setShowApiKey(!showApiKey)}>
+                            {showApiKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => copyToClipboard(settings.apiKey, 'API Key')}>
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Dialog open={confirmDialog === 'regenerate'} onOpenChange={(o) => setConfirmDialog(o ? 'regenerate' : null)}>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="sm">
+                              <RefreshCw className="h-3 w-3 mr-1" />
+                              Regenerate API Key
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Regenerate API Key?</DialogTitle>
+                              <DialogDescription>
+                                This will invalidate your current API key. All existing integrations using this key will stop working.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter>
+                              <Button variant="outline" onClick={() => setConfirmDialog(null)}>Cancel</Button>
+                              <Button variant="destructive" onClick={handleRegenerateApiKey}>Regenerate</Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+
+                      <Separator />
+
+                      {/* Webhook Configuration */}
+                      <div className="space-y-3">
+                        <Label className="text-base font-medium">Webhook URL</Label>
+                        <Input 
+                          value={settings.webhookUrl} 
+                          onChange={(e) => handleSettingChange('webhookUrl', e.target.value)}
+                          placeholder="https://your-domain.com/webhooks"
+                        />
+                        <div className="space-y-2">
+                          <Label className="text-sm text-muted-foreground">Webhook Events</Label>
+                          <div className="flex flex-wrap gap-2">
+                            {['Payment Success', 'Payment Failure', 'Refund', 'Settlement', 'Dispute'].map((event) => (
+                              <Badge key={event} variant="secondary" className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors">{event}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <Separator />
+
+                      {/* IP Whitelist */}
+                      <div className="space-y-3">
+                        <Label className="text-base font-medium">IP Whitelist</Label>
+                        <Input 
+                          value={settings.ipWhitelist} 
+                          onChange={(e) => handleSettingChange('ipWhitelist', e.target.value)}
+                          placeholder="Comma-separated IP addresses"
+                        />
+                        <p className="text-xs text-muted-foreground">Leave empty to allow all IPs. For security, we recommend whitelisting specific IPs.</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </TabsContent>
+
+              {/* Security & Preferences Tab */}
+              <TabsContent value="security" className="space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                >
                   {/* Account Preferences */}
                   <Card>
                     <CardHeader className="pb-3">
@@ -458,19 +675,6 @@ export default function ProfileSettings() {
                           </SelectContent>
                         </Select>
                       </div>
-                      <div className="space-y-2">
-                        <Label>Default Dashboard View</Label>
-                        <Select value={settings.defaultView} onValueChange={(v) => handleSettingChange('defaultView', v)}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="overview">Overview</SelectItem>
-                            <SelectItem value="transactions">Transactions</SelectItem>
-                            <SelectItem value="settlements">Settlements</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
                     </CardContent>
                   </Card>
 
@@ -499,10 +703,6 @@ export default function ProfileSettings() {
                       </div>
                       <Separator />
                       <div className="space-y-2">
-                        <Label>Last Login</Label>
-                        <p className="text-sm text-muted-foreground">26-Dec-2024 14:32 from Bengaluru, India</p>
-                      </div>
-                      <div className="space-y-2">
                         <div className="flex items-center justify-between">
                           <Label>Active Sessions ({activeSessions.length})</Label>
                           <Dialog open={confirmDialog === 'logout'} onOpenChange={(o) => setConfirmDialog(o ? 'logout' : null)}>
@@ -516,7 +716,7 @@ export default function ProfileSettings() {
                               <DialogHeader>
                                 <DialogTitle>Logout from All Devices?</DialogTitle>
                                 <DialogDescription>
-                                  This will terminate all active sessions except the current one. You'll need to log in again on other devices.
+                                  This will terminate all active sessions except the current one.
                                 </DialogDescription>
                               </DialogHeader>
                               <DialogFooter>
@@ -562,21 +762,9 @@ export default function ProfileSettings() {
                           <thead>
                             <tr className="border-b">
                               <th className="text-left py-2 font-medium">Event Type</th>
-                              <th className="text-center py-2 font-medium">
-                                <div className="flex items-center justify-center gap-1">
-                                  <Mail className="h-4 w-4" /> Email
-                                </div>
-                              </th>
-                              <th className="text-center py-2 font-medium">
-                                <div className="flex items-center justify-center gap-1">
-                                  <Smartphone className="h-4 w-4" /> SMS
-                                </div>
-                              </th>
-                              <th className="text-center py-2 font-medium">
-                                <div className="flex items-center justify-center gap-1">
-                                  <Bell className="h-4 w-4" /> In-App
-                                </div>
-                              </th>
+                              <th className="text-center py-2 font-medium">Email</th>
+                              <th className="text-center py-2 font-medium">SMS</th>
+                              <th className="text-center py-2 font-medium">In-App</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -585,7 +773,7 @@ export default function ProfileSettings() {
                               { key: 'transactionFailure', label: 'Transaction Failure' },
                               { key: 'settlementCredit', label: 'Settlement Credit' },
                               { key: 'refundUpdates', label: 'Refund Updates' },
-                              { key: 'disputeUpdates', label: 'Dispute / Complaint Updates' },
+                              { key: 'disputeUpdates', label: 'Dispute Updates' },
                             ].map((item) => (
                               <tr key={item.key} className="border-b">
                                 <td className="py-3">{item.label}</td>
@@ -615,317 +803,53 @@ export default function ProfileSettings() {
                     </CardContent>
                   </Card>
 
-                  {/* API & Integration Settings */}
-                  <Card>
+                  {/* Audit Logs */}
+                  <Card className="lg:col-span-2">
                     <CardHeader className="pb-3">
-                      <div className="flex items-center gap-2">
-                        <Key className="h-5 w-5 text-primary" />
-                        <CardTitle className="text-lg">API & Integration Settings</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between py-2">
-                        <div className="space-y-0.5">
-                          <Label>API Access</Label>
-                          <p className="text-xs text-muted-foreground">Enable API access for integrations</p>
-                        </div>
-                        <Switch 
-                          checked={settings.apiEnabled} 
-                          onCheckedChange={(v) => handleSettingChange('apiEnabled', v)} 
-                        />
-                      </div>
-                      <Separator />
-                      <div className="space-y-2">
-                        <Label>API Key</Label>
+                      <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Input 
-                            type={showApiKey ? 'text' : 'password'} 
-                            value={settings.apiKey} 
-                            readOnly 
-                            className="font-mono text-sm"
-                          />
-                          <Button variant="ghost" size="icon" onClick={() => setShowApiKey(!showApiKey)}>
-                            {showApiKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                          </Button>
-                          <Button variant="ghost" size="icon" onClick={() => copyToClipboard(settings.apiKey, 'API Key')}>
-                            <Copy className="h-4 w-4" />
-                          </Button>
+                          <History className="h-5 w-5 text-primary" />
+                          <CardTitle className="text-lg">Activity & Audit Logs</CardTitle>
                         </div>
-                        <Dialog open={confirmDialog === 'regenerate'} onOpenChange={(o) => setConfirmDialog(o ? 'regenerate' : null)}>
-                          <DialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="mt-2">
-                              <RefreshCw className="h-3 w-3 mr-1" />
-                              Regenerate API Key
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Regenerate API Key?</DialogTitle>
-                              <DialogDescription>
-                                This will invalidate your current API key. All existing integrations using this key will stop working.
-                              </DialogDescription>
-                            </DialogHeader>
-                            <DialogFooter>
-                              <Button variant="outline" onClick={() => setConfirmDialog(null)}>Cancel</Button>
-                              <Button variant="destructive" onClick={handleRegenerateApiKey}>Regenerate</Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
+                        <Button variant="outline" size="sm">
+                          <Download className="h-4 w-4 mr-2" />
+                          Export Logs
+                        </Button>
                       </div>
-                      <Separator />
-                      <div className="space-y-2">
-                        <Label>Webhook URL</Label>
-                        <Input 
-                          value={settings.webhookUrl} 
-                          onChange={(e) => handleSettingChange('webhookUrl', e.target.value)}
-                          placeholder="https://your-domain.com/webhooks"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Webhook Events</Label>
-                        <div className="flex flex-wrap gap-2">
-                          {['Payment Success', 'Payment Failure', 'Refund', 'Settlement'].map((event) => (
-                            <Badge key={event} variant="secondary" className="cursor-pointer">{event}</Badge>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <Label>IP Whitelist</Label>
-                        <Input 
-                          value={settings.ipWhitelist} 
-                          onChange={(e) => handleSettingChange('ipWhitelist', e.target.value)}
-                          placeholder="Comma-separated IP addresses"
-                        />
-                        <p className="text-xs text-muted-foreground">Leave empty to allow all IPs</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* QR & Payment Settings */}
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-2">
-                        <QrCode className="h-5 w-5 text-primary" />
-                        <CardTitle className="text-lg">QR & Payment Settings</CardTitle>
-                      </div>
+                      <CardDescription>Track all profile updates, settings changes, and security events</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Label>Default QR Type</Label>
-                        <Select value={settings.defaultQrType} onValueChange={(v) => handleSettingChange('defaultQrType', v)}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="static">Static QR</SelectItem>
-                            <SelectItem value="dynamic">Dynamic QR</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="flex items-center justify-between py-2">
-                        <div className="space-y-0.5">
-                          <Label>Auto-generate QR for Sub-Merchants</Label>
-                          <p className="text-xs text-muted-foreground">Automatically create QR codes for new sub-merchants</p>
-                        </div>
-                        <Switch 
-                          checked={settings.autoGenerateQr} 
-                          onCheckedChange={(v) => handleSettingChange('autoGenerateQr', v)} 
-                        />
-                      </div>
-                      <Separator />
-                      <div className="grid grid-cols-3 gap-4">
-                        <div className="space-y-2">
-                          <Label>Min Amount (₹)</Label>
-                          <Input 
-                            type="number" 
-                            value={settings.minAmount}
-                            onChange={(e) => handleSettingChange('minAmount', Number(e.target.value))}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Max Amount (₹)</Label>
-                          <Input 
-                            type="number" 
-                            value={settings.maxAmount}
-                            onChange={(e) => handleSettingChange('maxAmount', Number(e.target.value))}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Daily Cap (₹)</Label>
-                          <Input 
-                            type="number" 
-                            value={settings.dailyCap}
-                            onChange={(e) => handleSettingChange('dailyCap', Number(e.target.value))}
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Settlement Preferences */}
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-2">
-                        <CreditCard className="h-5 w-5 text-primary" />
-                        <CardTitle className="text-lg">Settlement Preferences</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Label>Settlement Cycle</Label>
-                        <Select value={settings.settlementCycle} onValueChange={(v) => handleSettingChange('settlementCycle', v)}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="T+0">T+0 (Same Day)</SelectItem>
-                            <SelectItem value="T+1">T+1 (Next Day)</SelectItem>
-                            <SelectItem value="T+2">T+2 (Two Days)</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <Button variant="outline" className="w-full justify-start">
-                        <Edit className="h-4 w-4 mr-2" />
-                        Request Settlement Account Change
-                      </Button>
-                      <Separator />
-                      <div className="space-y-2">
-                        <Label>Statement / Report Format</Label>
-                        <Select value={settings.reportFormat} onValueChange={(v) => handleSettingChange('reportFormat', v)}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="pdf">PDF</SelectItem>
-                            <SelectItem value="csv">CSV</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Sub-Merchant Settings */}
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-2">
-                        <Users className="h-5 w-5 text-primary" />
-                        <CardTitle className="text-lg">Sub-Merchant Settings</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between py-2">
-                        <div className="space-y-0.5">
-                          <Label>Enable Sub-Merchant Creation</Label>
-                          <p className="text-xs text-muted-foreground">Allow creating sub-merchants under this account</p>
-                        </div>
-                        <Switch 
-                          checked={settings.subMerchantEnabled} 
-                          onCheckedChange={(v) => handleSettingChange('subMerchantEnabled', v)} 
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Default Limit for Sub-Merchants (₹)</Label>
-                        <Input 
-                          type="number" 
-                          value={settings.defaultSubMerchantLimit}
-                          onChange={(e) => handleSettingChange('defaultSubMerchantLimit', Number(e.target.value))}
-                        />
-                      </div>
-                      <div className="flex items-center justify-between py-2">
-                        <div className="space-y-0.5">
-                          <Label>Sub-Merchant Approval Workflow</Label>
-                          <p className="text-xs text-muted-foreground">Require approval for new sub-merchants</p>
-                        </div>
-                        <Switch 
-                          checked={settings.subMerchantApproval} 
-                          onCheckedChange={(v) => handleSettingChange('subMerchantApproval', v)} 
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Compliance & Consent */}
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-5 w-5 text-primary" />
-                        <CardTitle className="text-lg">Compliance & Consent</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between py-2">
-                        <div>
-                          <Label>Terms & Conditions</Label>
-                          <p className="text-xs text-muted-foreground">Version {settings.termsVersion} • Accepted on {settings.termsDate}</p>
-                        </div>
-                        <StatusBadge status={settings.termsAccepted ? 'Verified' : 'Pending'} />
-                      </div>
-                      <Separator />
-                      <div className="flex items-center justify-between py-2">
-                        <div className="space-y-0.5">
-                          <Label>Data Privacy Consent</Label>
-                          <p className="text-xs text-muted-foreground">Allow processing of transaction data</p>
-                        </div>
-                        <Switch 
-                          checked={settings.dataPrivacyConsent} 
-                          onCheckedChange={(v) => handleSettingChange('dataPrivacyConsent', v)} 
-                        />
-                      </div>
-                      <Button variant="link" className="p-0 h-auto text-primary">
-                        View Terms & Conditions →
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-
-              {/* Audit Logs Tab */}
-              <TabsContent value="audit" className="space-y-6">
-                <Card>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <History className="h-5 w-5 text-primary" />
-                        <CardTitle className="text-lg">Activity & Audit Logs</CardTitle>
-                      </div>
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4 mr-2" />
-                        Export Logs
-                      </Button>
-                    </div>
-                    <CardDescription>Track all profile updates, settings changes, and security events</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b bg-muted/50">
-                            <th className="text-left py-3 px-4 font-medium text-sm">Timestamp</th>
-                            <th className="text-left py-3 px-4 font-medium text-sm">Action</th>
-                            <th className="text-left py-3 px-4 font-medium text-sm">Category</th>
-                            <th className="text-left py-3 px-4 font-medium text-sm">User</th>
-                            <th className="text-left py-3 px-4 font-medium text-sm">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {auditLogs.map((log) => (
-                            <tr key={log.id} className="border-b hover:bg-muted/30 transition-colors">
-                              <td className="py-3 px-4 text-sm text-muted-foreground">{log.timestamp}</td>
-                              <td className="py-3 px-4 text-sm font-medium">{log.action}</td>
-                              <td className="py-3 px-4">
-                                <Badge variant="outline" className="text-xs">{log.category}</Badge>
-                              </td>
-                              <td className="py-3 px-4 text-sm">{log.user}</td>
-                              <td className="py-3 px-4">
-                                <StatusBadge status={log.status} />
-                              </td>
+                    <CardContent>
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead>
+                            <tr className="border-b bg-muted/50">
+                              <th className="text-left py-3 px-4 font-medium text-sm">Timestamp</th>
+                              <th className="text-left py-3 px-4 font-medium text-sm">Action</th>
+                              <th className="text-left py-3 px-4 font-medium text-sm">Category</th>
+                              <th className="text-left py-3 px-4 font-medium text-sm">User</th>
+                              <th className="text-left py-3 px-4 font-medium text-sm">Status</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </CardContent>
-                </Card>
+                          </thead>
+                          <tbody>
+                            {auditLogs.map((log) => (
+                              <tr key={log.id} className="border-b hover:bg-muted/30 transition-colors">
+                                <td className="py-3 px-4 text-sm text-muted-foreground">{log.timestamp}</td>
+                                <td className="py-3 px-4 text-sm font-medium">{log.action}</td>
+                                <td className="py-3 px-4">
+                                  <Badge variant="outline" className="text-xs">{log.category}</Badge>
+                                </td>
+                                <td className="py-3 px-4 text-sm">{log.user}</td>
+                                <td className="py-3 px-4">
+                                  <StatusBadge status={log.status} />
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </TabsContent>
             </Tabs>
           </div>
