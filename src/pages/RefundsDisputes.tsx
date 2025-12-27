@@ -63,6 +63,7 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from '@/hooks/use-toast';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
+import DashboardHeader from '@/components/dashboard/DashboardHeader';
 
 // Sample refund data
 const sampleRefunds = [
@@ -454,8 +455,11 @@ const RefundsDisputes = () => {
     <div className="flex min-h-screen bg-background">
       <DashboardSidebar />
       
-      <main className="flex-1 p-8 overflow-auto">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <DashboardHeader />
+        
+        <main className="flex-1 p-8 overflow-auto">
+          <div className="max-w-7xl mx-auto space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
@@ -801,8 +805,8 @@ const RefundsDisputes = () => {
               </Card>
             </TabsContent>
           </Tabs>
-        </div>
-      </main>
+          </div>
+        </main>
 
       {/* Initiate Refund Sheet */}
       <Sheet open={showInitiateRefund} onOpenChange={setShowInitiateRefund}>
@@ -1357,6 +1361,7 @@ const RefundsDisputes = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 };
