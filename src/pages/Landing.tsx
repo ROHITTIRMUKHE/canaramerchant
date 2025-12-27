@@ -11,12 +11,14 @@ import ThemeToggle from '@/components/ThemeToggle';
 import PCIDSSModal from '@/components/landing/PCIDSSModal';
 import PrivacyPolicyModal from '@/components/landing/PrivacyPolicyModal';
 import TermsOfServiceModal from '@/components/landing/TermsOfServiceModal';
+import ContactSupportModal from '@/components/landing/ContactSupportModal';
 import canaraBankLogo from '@/assets/canara-bank-logo.png';
 
 export default function Landing() {
   const [pciModalOpen, setPciModalOpen] = useState(false);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [termsModalOpen, setTermsModalOpen] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
   
@@ -174,7 +176,7 @@ export default function Landing() {
                 <span className="text-muted-foreground">•</span>
                 <button onClick={() => setTermsModalOpen(true)} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">Terms of Service</button>
                 <span className="text-muted-foreground">•</span>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Contact Support</a>
+                <button onClick={() => setContactModalOpen(true)} className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">Contact Support</button>
               </div>
             </div>
           </div>
@@ -184,6 +186,7 @@ export default function Landing() {
       <PCIDSSModal open={pciModalOpen} onOpenChange={setPciModalOpen} />
       <PrivacyPolicyModal open={privacyModalOpen} onOpenChange={setPrivacyModalOpen} />
       <TermsOfServiceModal open={termsModalOpen} onOpenChange={setTermsModalOpen} />
+      <ContactSupportModal open={contactModalOpen} onOpenChange={setContactModalOpen} />
     </div>
   );
 }
