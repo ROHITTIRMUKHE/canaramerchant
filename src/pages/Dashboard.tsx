@@ -68,6 +68,7 @@ export default function Dashboard() {
                 icon={IndianRupee}
                 navigateTo="/dashboard/transactions?filter=today"
                 delay={0}
+                colorScheme="blue"
               />
               <KPICard
                 title="Today's Settlements"
@@ -77,6 +78,7 @@ export default function Dashboard() {
                 icon={Banknote}
                 navigateTo="/dashboard/settlements"
                 delay={0.1}
+                colorScheme="green"
               />
               <KPICard
                 title="Pending Actions"
@@ -85,6 +87,7 @@ export default function Dashboard() {
                 icon={AlertCircle}
                 navigateTo="/dashboard/refunds"
                 delay={0.2}
+                colorScheme="yellow"
               />
               {isMainMerchant && (
                 <KPICard
@@ -95,6 +98,7 @@ export default function Dashboard() {
                   icon={Users}
                   navigateTo="/dashboard/submerchants"
                   delay={0.3}
+                  colorScheme="purple"
                 />
               )}
             </div>
