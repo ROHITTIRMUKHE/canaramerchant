@@ -12,11 +12,13 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n';
 
 type MerchantType = 'main' | 'sub';
 type QRType = 'static' | 'dynamic';
 
 export default function QRManagement() {
+  const { t } = useLanguage();
   const [activeMerchant, setActiveMerchant] = useState<MerchantType>('main');
   const [selectedQRType, setSelectedQRType] = useState<QRType | null>(null);
   const [amount, setAmount] = useState<string>('');
@@ -107,11 +109,11 @@ export default function QRManagement() {
                   <div className="p-2 rounded-xl bg-gradient-to-br from-sky-500 to-sky-600 text-white shadow-lg shadow-sky-500/30">
                     <QrCode className="h-6 w-6" />
                   </div>
-                  QR Management
+                  {t.pages.qrManagement.title}
                   <Sparkles className="h-5 w-5 text-amber-500 animate-pulse" />
                 </h1>
                 <p className="text-muted-foreground">
-                  Generate and manage QR codes for your merchant accounts
+                  {t.pages.qrManagement.subtitle}
                 </p>
               </div>
             </div>
