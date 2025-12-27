@@ -58,13 +58,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -75,6 +68,7 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import CreateSubMerchantDialog from '@/components/submerchant/CreateSubMerchantDialog';
 
 // Sample Sub-Merchant Data
 const sampleSubMerchants = [
@@ -407,19 +401,20 @@ export default function SubMerchantManagement() {
     setShowStatsDialog(true);
   };
 
-  // Create Form State
-  const [newSubMerchant, setNewSubMerchant] = useState({
-    name: '',
-    tradeName: '',
-    mobile: '',
-    email: '',
-    address: '',
-    city: '',
-    state: '',
-    pincode: '',
-    dailyLimit: '',
-    monthlyLimit: ''
-  });
+  // Get existing VPAs for validation
+  const existingVpas = subMerchants.map(m => m.vpa.toLowerCase());
+
+  // Handle successful sub-merchant creation
+  const handleSubMerchantCreated = (newMerchant: any, auditEntry: any) => {
+    setSubMerchants(prev => [...prev, newMerchant]);
+    setAuditLogs(prev => [auditEntry, ...prev]);
+    setShowCreateForm(false);
+    
+    toast({
+      title: "Sub-Merchant Created",
+      description: `${newMerchant.name} has been successfully created with ID: ${newMerchant.id}`,
+    });
+  };
 
   // Filter Sub-Merchants
   const filteredSubMerchants = subMerchants.filter(merchant => {
@@ -479,71 +474,6 @@ export default function SubMerchantManagement() {
     auditCurrentPage * auditItemsPerPage
   );
 
-  const handleCreateSubMerchant = () => {
-    if (!newSubMerchant.name || !newSubMerchant.mobile || !newSubMerchant.email) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill all required fields",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const newId = `SM${String(subMerchants.length + 1).padStart(3, '0')}`;
-    const newVpa = `${newSubMerchant.tradeName.toLowerCase().replace(/\s+/g, '')}@canarabank`;
-    
-    const merchant = {
-      id: newId,
-      name: newSubMerchant.name,
-      tradeName: newSubMerchant.tradeName || newSubMerchant.name,
-      mobile: newSubMerchant.mobile,
-      email: newSubMerchant.email,
-      vpa: newVpa,
-      status: 'Active',
-      createdDate: new Date().toISOString().split('T')[0],
-      lastActive: new Date().toISOString().split('T')[0],
-      dailyLimit: parseInt(newSubMerchant.dailyLimit) || 50000,
-      monthlyLimit: parseInt(newSubMerchant.monthlyLimit) || 1000000,
-      address: newSubMerchant.address,
-      city: newSubMerchant.city,
-      state: newSubMerchant.state,
-      pincode: newSubMerchant.pincode,
-      totalTransactions: 0,
-      totalVolume: 0
-    };
-
-    setSubMerchants([...subMerchants, merchant]);
-    
-    // Add audit log
-    const auditEntry = {
-      id: `AUD${String(auditLogs.length + 1).padStart(3, '0')}`,
-      subMerchantName: merchant.name,
-      subMerchantId: merchant.id,
-      mobile: merchant.mobile,
-      vpa: merchant.vpa,
-      action: 'Created',
-      description: 'Sub-merchant account created with initial limits',
-      performedBy: 'MM001',
-      timestamp: new Date().toLocaleString('en-IN', { 
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false 
-      }).replace(/\//g, '-'),
-      status: 'Success'
-    };
-    setAuditLogs([auditEntry, ...auditLogs]);
-
-    setShowCreateForm(false);
-    setNewSubMerchant({
-      name: '', tradeName: '', mobile: '', email: '',
-      address: '', city: '', state: '', pincode: '',
-      dailyLimit: '', monthlyLimit: ''
-    });
-
-    toast({
-      title: "Sub-Merchant Created",
-      description: `${merchant.name} has been successfully created with ID: ${merchant.id}`,
-    });
-  };
 
   const handleAction = (type: string, merchant: typeof sampleSubMerchants[0]) => {
     setConfirmAction({ type, merchant });
@@ -1020,142 +950,13 @@ export default function SubMerchantManagement() {
         </main>
       </div>
 
-      {/* Create Sub-Merchant Sheet */}
-      <Sheet open={showCreateForm} onOpenChange={setShowCreateForm}>
-        <SheetContent className="w-[500px] sm:max-w-[500px]">
-          <SheetHeader>
-            <SheetTitle>Add New Sub-Merchant</SheetTitle>
-            <SheetDescription>Create a new sub-merchant under your main merchant account</SheetDescription>
-          </SheetHeader>
-          <ScrollArea className="h-[calc(100vh-180px)] mt-6 pr-4">
-            <div className="space-y-6">
-              <div className="space-y-4">
-                <h4 className="font-medium text-sm text-muted-foreground">Business Information</h4>
-                <div className="space-y-3">
-                  <div>
-                    <Label>Legal Name *</Label>
-                    <Input
-                      placeholder="Enter legal business name"
-                      value={newSubMerchant.name}
-                      onChange={(e) => setNewSubMerchant({ ...newSubMerchant, name: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label>Trade / Display Name</Label>
-                    <Input
-                      placeholder="Enter display name"
-                      value={newSubMerchant.tradeName}
-                      onChange={(e) => setNewSubMerchant({ ...newSubMerchant, tradeName: e.target.value })}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-4">
-                <h4 className="font-medium text-sm text-muted-foreground">Contact Details</h4>
-                <div className="space-y-3">
-                  <div>
-                    <Label>Mobile Number *</Label>
-                    <Input
-                      placeholder="Enter 10-digit mobile number"
-                      value={newSubMerchant.mobile}
-                      onChange={(e) => setNewSubMerchant({ ...newSubMerchant, mobile: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label>Email ID *</Label>
-                    <Input
-                      type="email"
-                      placeholder="Enter email address"
-                      value={newSubMerchant.email}
-                      onChange={(e) => setNewSubMerchant({ ...newSubMerchant, email: e.target.value })}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-4">
-                <h4 className="font-medium text-sm text-muted-foreground">Business Address</h4>
-                <div className="space-y-3">
-                  <div>
-                    <Label>Address</Label>
-                    <Textarea
-                      placeholder="Enter business address"
-                      value={newSubMerchant.address}
-                      onChange={(e) => setNewSubMerchant({ ...newSubMerchant, address: e.target.value })}
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <Label>City</Label>
-                      <Input
-                        placeholder="City"
-                        value={newSubMerchant.city}
-                        onChange={(e) => setNewSubMerchant({ ...newSubMerchant, city: e.target.value })}
-                      />
-                    </div>
-                    <div>
-                      <Label>State</Label>
-                      <Input
-                        placeholder="State"
-                        value={newSubMerchant.state}
-                        onChange={(e) => setNewSubMerchant({ ...newSubMerchant, state: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <Label>PIN Code</Label>
-                    <Input
-                      placeholder="Enter 6-digit PIN"
-                      value={newSubMerchant.pincode}
-                      onChange={(e) => setNewSubMerchant({ ...newSubMerchant, pincode: e.target.value })}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-4">
-                <h4 className="font-medium text-sm text-muted-foreground">Transaction Limits</h4>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label>Daily Limit (₹)</Label>
-                    <Input
-                      type="number"
-                      placeholder="50000"
-                      value={newSubMerchant.dailyLimit}
-                      onChange={(e) => setNewSubMerchant({ ...newSubMerchant, dailyLimit: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label>Monthly Limit (₹)</Label>
-                    <Input
-                      type="number"
-                      placeholder="1000000"
-                      value={newSubMerchant.monthlyLimit}
-                      onChange={(e) => setNewSubMerchant({ ...newSubMerchant, monthlyLimit: e.target.value })}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <Button variant="outline" onClick={() => setShowCreateForm(false)} className="flex-1">
-                  Cancel
-                </Button>
-                <Button onClick={handleCreateSubMerchant} className="flex-1">
-                  Create Sub-Merchant
-                </Button>
-              </div>
-            </div>
-          </ScrollArea>
-        </SheetContent>
-      </Sheet>
+      {/* Create Sub-Merchant Dialog */}
+      <CreateSubMerchantDialog
+        open={showCreateForm}
+        onOpenChange={setShowCreateForm}
+        onSuccess={handleSubMerchantCreated}
+        existingVpas={existingVpas}
+      />
 
       {/* Sub-Merchant Details Dialog */}
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
