@@ -32,6 +32,33 @@ export const en: Translations = {
     contactSupport: 'Contact Support',
     copyright: '© 2024 Canara Bank. All Rights Reserved.',
     upiMerchantSolutions: 'UPI Merchant Solutions',
+    // Features section
+    whyChoose: 'Why Choose',
+    whyChooseBank: 'Canara Bank',
+    whyChooseUpi: 'UPI?',
+    trustedByMerchants: 'Trusted by over 2 lakh merchants across India for secure, reliable UPI payments.',
+    features: {
+      instantQr: { title: 'Instant QR Payments', description: 'Accept payments instantly with dynamic QR codes. No hardware needed.' },
+      realTimeSettlements: { title: 'Real-time Settlements', description: 'Get your money within hours, not days. Faster cash flow for your business.' },
+      bankGradeSecurity: { title: 'Bank-grade Security', description: "Protected by Canara Bank's enterprise security infrastructure." },
+      smartAnalytics: { title: 'Smart Analytics', description: 'Track every transaction with detailed insights and reports.' },
+      multiDevice: { title: 'Multi-device Access', description: 'Manage your payments from any device, anywhere, anytime.' },
+      lowFees: { title: 'Low Transaction Fees', description: 'Competitive rates that help you keep more of what you earn.' },
+    },
+    // Stats section
+    stats: {
+      dailyVolume: 'Daily Transaction Volume',
+      activeMerchants: 'Active Merchants',
+      platformUptime: 'Platform Uptime',
+      avgSettlementTime: 'Avg Settlement Time',
+    },
+    // Trust indicators
+    trustIndicators: {
+      dailyVolume: 'Daily Volume',
+      merchants: 'Merchants',
+      uptime: 'Uptime',
+      certified: 'Certified',
+    },
   },
   login: {
     title: 'Merchant Login',

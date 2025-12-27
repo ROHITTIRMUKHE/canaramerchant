@@ -35,6 +35,33 @@ export const te: Translations = {
     contactSupport: 'సపోర్ట్‌ను సంప్రదించండి',
     copyright: '© 2024 కెనరా బ్యాంక్. అన్ని హక్కులు రిజర్వ్ చేయబడ్డాయి.',
     upiMerchantSolutions: 'UPI మర్చంట్ సొల్యూషన్స్',
+    // Features section
+    whyChoose: 'ఎందుకు ఎంచుకోవాలి',
+    whyChooseBank: 'కెనరా బ్యాంక్',
+    whyChooseUpi: 'UPI?',
+    trustedByMerchants: 'సురక్షితమైన, నమ్మదగిన UPI చెల్లింపుల కోసం భారతదేశం అంతటా 2 లక్షల కంటే ఎక్కువ వ్యాపారులు నమ్ముతున్నారు.',
+    features: {
+      instantQr: { title: 'తక్షణ QR చెల్లింపులు', description: 'డైనమిక్ QR కోడ్‌లతో తక్షణమే చెల్లింపులను అంగీకరించండి. హార్డ్‌వేర్ అవసరం లేదు.' },
+      realTimeSettlements: { title: 'రియల్-టైమ్ సెటిల్‌మెంట్లు', description: 'రోజుల్లో కాదు, గంటల్లో మీ డబ్బును పొందండి. మీ వ్యాపారానికి వేగవంతమైన నగదు ప్రవాహం.' },
+      bankGradeSecurity: { title: 'బ్యాంక్-గ్రేడ్ భద్రత', description: 'కెనరా బ్యాంక్ ఎంటర్‌ప్రైజ్ భద్రతా మౌలిక సదుపాయంతో రక్షించబడింది.' },
+      smartAnalytics: { title: 'స్మార్ట్ అనలిటిక్స్', description: 'వివరమైన అంతర్దృష్టులు మరియు నివేదికలతో ప్రతి లావాదేవీని ట్రాక్ చేయండి.' },
+      multiDevice: { title: 'మల్టీ-డివైస్ యాక్సెస్', description: 'ఏ పరికరం నుండైనా, ఎక్కడి నుండైనా, ఎప్పుడైనా మీ చెల్లింపులను నిర్వహించండి.' },
+      lowFees: { title: 'తక్కువ లావాదేవీ రుసుములు', description: 'మీరు సంపాదించినదాన్ని ఎక్కువగా ఉంచుకోవడానికి సహాయపడే పోటీ రేట్లు.' },
+    },
+    // Stats section
+    stats: {
+      dailyVolume: 'రోజువారీ లావాదేవీ పరిమాణం',
+      activeMerchants: 'యాక్టివ్ వ్యాపారులు',
+      platformUptime: 'ప్లాట్‌ఫారమ్ అప్‌టైమ్',
+      avgSettlementTime: 'సగటు సెటిల్‌మెంట్ సమయం',
+    },
+    // Trust indicators
+    trustIndicators: {
+      dailyVolume: 'రోజువారీ పరిమాణం',
+      merchants: 'వ్యాపారులు',
+      uptime: 'అప్‌టైమ్',
+      certified: 'సర్టిఫైడ్',
+    },
   },
   login: {
     title: 'మర్చంట్ లాగిన్',

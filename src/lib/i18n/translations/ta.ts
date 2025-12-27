@@ -35,6 +35,33 @@ export const ta: Translations = {
     contactSupport: 'ஆதரவைத் தொடர்பு கொள்ளவும்',
     copyright: '© 2024 கனரா வங்கி. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.',
     upiMerchantSolutions: 'UPI வணிகர் தீர்வுகள்',
+    // Features section
+    whyChoose: 'ஏன் தேர்வு செய்ய வேண்டும்',
+    whyChooseBank: 'கனரா வங்கி',
+    whyChooseUpi: 'UPI?',
+    trustedByMerchants: 'பாதுகாப்பான, நம்பகமான UPI கட்டணங்களுக்கு இந்தியா முழுவதும் 2 லட்சத்துக்கும் மேற்பட்ட வணிகர்களால் நம்பப்படுகிறது.',
+    features: {
+      instantQr: { title: 'உடனடி QR கட்டணங்கள்', description: 'டைனமிக் QR குறியீடுகளுடன் உடனடியாக கட்டணங்களை ஏற்றுக்கொள்ளுங்கள். வன்பொருள் தேவையில்லை.' },
+      realTimeSettlements: { title: 'நிகழ்நேர தீர்வுகள்', description: 'நாட்களில் அல்ல, மணிநேரங்களில் உங்கள் பணத்தைப் பெறுங்கள். உங்கள் வணிகத்திற்கு விரைவான பணப்புழக்கம்.' },
+      bankGradeSecurity: { title: 'வங்கி-தர பாதுகாப்பு', description: 'கனரா வங்கியின் நிறுவன பாதுகாப்பு உள்கட்டமைப்பால் பாதுகாக்கப்படுகிறது.' },
+      smartAnalytics: { title: 'ஸ்மார்ட் அனலிட்டிக்ஸ்', description: 'விரிவான நுண்ணறிவுகள் மற்றும் அறிக்கைகளுடன் ஒவ்வொரு பரிவர்த்தனையையும் கண்காணிக்கவும்.' },
+      multiDevice: { title: 'பல சாதன அணுகல்', description: 'எந்த சாதனத்திலிருந்தும், எங்கிருந்தும், எப்போதும் உங்கள் கட்டணங்களை நிர்வகிக்கவும்.' },
+      lowFees: { title: 'குறைந்த பரிவர்த்தனை கட்டணங்கள்', description: 'நீங்கள் சம்பாதிப்பதை அதிகம் வைத்திருக்க உதவும் போட்டி விலைகள்.' },
+    },
+    // Stats section
+    stats: {
+      dailyVolume: 'தினசரி பரிவர்த்தனை அளவு',
+      activeMerchants: 'செயலில் உள்ள வணிகர்கள்',
+      platformUptime: 'தளம் இயங்கும் நேரம்',
+      avgSettlementTime: 'சராசரி தீர்வு நேரம்',
+    },
+    // Trust indicators
+    trustIndicators: {
+      dailyVolume: 'தினசரி அளவு',
+      merchants: 'வணிகர்கள்',
+      uptime: 'இயங்கும் நேரம்',
+      certified: 'சான்றளிக்கப்பட்டது',
+    },
   },
   login: {
     title: 'வணிகர் உள்நுழைவு',
