@@ -1,11 +1,38 @@
 import { motion } from 'framer-motion';
-import { IndianRupee, TrendingUp, Users, QrCode } from 'lucide-react';
+import { IndianRupee, Banknote, AlertCircle, Users } from 'lucide-react';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
-import StatsCard from '@/components/dashboard/StatsCard';
-import TransactionsChart from '@/components/dashboard/TransactionsChart';
+import KPICard from '@/components/dashboard/KPICard';
+import SettlementSnapshot from '@/components/dashboard/SettlementSnapshot';
+import AlertsSection from '@/components/dashboard/AlertsSection';
+import BusinessTrendChart from '@/components/dashboard/BusinessTrendChart';
 import RecentTransactions from '@/components/dashboard/RecentTransactions';
-import QuickActions from '@/components/dashboard/QuickActions';
+import QuickActionsPanel from '@/components/dashboard/QuickActionsPanel';
+
+// Mock role - in real app this would come from auth context
+const isMainMerchant = true;
+
+// Mock data - in real app this would come from API
+const kpiData = {
+  todaysCollection: {
+    value: '₹1,45,250',
+    change: '+12.5%',
+    changeType: 'positive' as const
+  },
+  todaysSettlements: {
+    value: '₹98,500',
+    status: 'Completed',
+    changeType: 'positive' as const
+  },
+  pendingActions: {
+    count: 4,
+    details: '4 items need attention'
+  },
+  activeSubMerchants: {
+    count: 45,
+    change: '+3'
+  }
+};
 
 export default function Dashboard() {
   return (
@@ -27,53 +54,68 @@ export default function Dashboard() {
                 Welcome back, Merchant Store
               </h1>
               <p className="text-muted-foreground">
-                Here's what's happening with your payments today.
+                Here's your business overview for today.
               </p>
             </div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <StatsCard
+            {/* KPI Cards Grid */}
+            <div className={`grid grid-cols-1 md:grid-cols-2 ${isMainMerchant ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-6 mb-8`}>
+              <KPICard
                 title="Today's Collection"
-                value="₹1,45,250"
-                change="+12.5%"
-                changeType="positive"
+                value={kpiData.todaysCollection.value}
+                change={kpiData.todaysCollection.change}
+                changeType={kpiData.todaysCollection.changeType}
                 icon={IndianRupee}
+                navigateTo="/dashboard/transactions?filter=today"
                 delay={0}
               />
-              <StatsCard
-                title="Total Transactions"
-                value="1,234"
-                change="+8.2%"
-                changeType="positive"
-                icon={TrendingUp}
+              <KPICard
+                title="Today's Settlements"
+                value={kpiData.todaysSettlements.value}
+                subtitle={`Status: ${kpiData.todaysSettlements.status}`}
+                changeType={kpiData.todaysSettlements.changeType}
+                icon={Banknote}
+                navigateTo="/dashboard/settlements"
                 delay={0.1}
               />
-              <StatsCard
-                title="Active Sub-Merchants"
-                value="45"
-                change="+3"
-                changeType="positive"
-                icon={Users}
+              <KPICard
+                title="Pending Actions"
+                value={String(kpiData.pendingActions.count)}
+                subtitle={kpiData.pendingActions.details}
+                icon={AlertCircle}
+                navigateTo="/dashboard/refunds"
                 delay={0.2}
               />
-              <StatsCard
-                title="QR Codes Generated"
-                value="128"
-                change="+15"
-                changeType="positive"
-                icon={QrCode}
-                delay={0.3}
-              />
+              {isMainMerchant && (
+                <KPICard
+                  title="Active Sub-Merchants"
+                  value={String(kpiData.activeSubMerchants.count)}
+                  change={kpiData.activeSubMerchants.change}
+                  changeType="positive"
+                  icon={Users}
+                  navigateTo="/dashboard/submerchants"
+                  delay={0.3}
+                />
+              )}
             </div>
 
-            {/* Charts and Actions */}
+            {/* Settlement Snapshot */}
+            <div className="mb-8">
+              <SettlementSnapshot />
+            </div>
+
+            {/* Alerts Section - Only shown when there are alerts */}
+            <div className="mb-8">
+              <AlertsSection />
+            </div>
+
+            {/* Charts and Quick Actions */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
               <div className="lg:col-span-2">
-                <TransactionsChart />
+                <BusinessTrendChart />
               </div>
               <div>
-                <QuickActions />
+                <QuickActionsPanel isMainMerchant={isMainMerchant} />
               </div>
             </div>
 
