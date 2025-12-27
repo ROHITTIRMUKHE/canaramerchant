@@ -38,7 +38,9 @@ export default function Landing() {
               className="h-10 lg:h-12 w-auto"
             />
             <div className="hidden sm:block">
-              <p className="text-xs text-muted-foreground">UPI Merchant Solutions</p>
+              <p className="text-sm font-bold bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(280,80%,60%)] to-[hsl(145,65%,50%)] bg-clip-text text-transparent tracking-wide">
+                UPI Merchant Solutions
+              </p>
             </div>
           </motion.div>
 
@@ -54,10 +56,10 @@ export default function Landing() {
 
       {/* Hero section - sticky with scroll effects */}
       <motion.section 
-        className="sticky top-0 min-h-screen flex flex-col pt-20"
+        className="sticky top-0 min-h-screen flex flex-col pt-16"
         style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}
       >
-        <div className="flex-1 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 px-6 lg:px-16 py-8">
+        <div className="flex-1 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-12 px-6 lg:px-16 py-4">
           {/* Left side - Hero content */}
           <div className="flex-1 max-w-2xl text-center lg:text-left z-20">
             <motion.div
@@ -66,13 +68,15 @@ export default function Landing() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <motion.div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 backdrop-blur-sm border border-border text-xs text-muted-foreground mb-6"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[hsl(198,93%,59%)/15] via-[hsl(280,80%,60%)/15] to-[hsl(145,65%,50%)/15] backdrop-blur-sm border border-[hsl(198,93%,59%)/40] text-sm font-semibold mb-6 shadow-lg"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                <span className="w-2 h-2 rounded-full bg-chart-4 animate-pulse" />
-                India's Trusted Public Sector Bank
+                <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[hsl(145,65%,50%)] to-[hsl(198,93%,59%)] animate-pulse" />
+                <span className="bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(280,80%,60%)] to-[hsl(145,65%,50%)] bg-clip-text text-transparent">
+                  India's Trusted Public Sector Bank
+                </span>
               </motion.div>
 
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
