@@ -357,7 +357,7 @@ export default function DashboardHeader() {
               API Keys
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive cursor-pointer">
+            <DropdownMenuItem onClick={() => navigate('/')} className="text-destructive cursor-pointer">
               <LogOut className="h-4 w-4 mr-2" />
               Logout
             </DropdownMenuItem>
