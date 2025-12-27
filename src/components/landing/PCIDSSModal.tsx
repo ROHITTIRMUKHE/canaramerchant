@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Shield } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 interface PCIDSSModalProps {
   open: boolean;
@@ -15,6 +16,9 @@ interface PCIDSSModalProps {
 }
 
 export default function PCIDSSModal({ open, onOpenChange }: PCIDSSModalProps) {
+  const { t, language } = useLanguage();
+  const content = t.pcidss;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[85vh] p-0">
@@ -25,10 +29,10 @@ export default function PCIDSSModal({ open, onOpenChange }: PCIDSSModalProps) {
             </div>
             <div>
               <DialogTitle className="text-xl font-bold text-foreground">
-                PCI-DSS Guidelines for Merchants
+                {content.title}
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground">
-                Canara Bank Security Compliance
+                {content.subtitle}
               </DialogDescription>
             </div>
           </div>
@@ -36,86 +40,76 @@ export default function PCIDSSModal({ open, onOpenChange }: PCIDSSModalProps) {
 
         <ScrollArea className="max-h-[60vh] px-6 py-4">
           <div className="space-y-6 text-sm text-foreground">
-            {/* Section 1 */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                1. Overview of PCI-DSS
+                {content.sections.overview.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                PCI-DSS (Payment Card Industry Data Security Standard) is a global security standard 
-                established by major card networks to protect cardholder data during payment processing. 
-                Canara Bank's Merchant Dashboard operates in alignment with applicable PCI-DSS requirements.
+                {content.sections.overview.content}
               </p>
             </section>
 
-            {/* Section 2 */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                2. What PCI-DSS Compliance Means for You
+                {content.sections.compliance.title}
               </h3>
               <ul className="text-muted-foreground space-y-2 list-disc list-inside leading-relaxed">
-                <li>Sensitive cardholder data is not stored or displayed on the merchant dashboard</li>
-                <li>Card transactions are processed through PCI-DSS certified payment infrastructure</li>
-                <li>All transaction data is securely encrypted</li>
-                <li>Access to payment systems is restricted and monitored</li>
+                {content.sections.compliance.items.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </section>
 
-            {/* Section 3 */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                3. Card Data Visibility
+                {content.sections.cardVisibility.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Merchants can view only non-sensitive transaction details such as transaction ID, date, 
-                amount, status, and masked card number. Full card number, CVV, PIN, and expiry details 
-                are never accessible.
+                {content.sections.cardVisibility.content}
               </p>
             </section>
 
-            {/* Section 4 */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                4. Security Measures by Canara Bank
+                {content.sections.securityMeasures.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Canara Bank implements secure network architecture, encryption, role-based access controls, 
-                continuous monitoring, and periodic security audits to maintain compliance.
+                {content.sections.securityMeasures.content}
               </p>
             </section>
 
-            {/* Section 5 */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                5. Merchant Responsibilities
+                {content.sections.merchantResponsibilities.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Merchants must protect login credentials, restrict access to authorized users, use secure 
-                devices, and report any suspected security incidents immediately.
+                {content.sections.merchantResponsibilities.content}
               </p>
             </section>
 
-            {/* Section 6 */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                6. Scope Limitation
+                {content.sections.scopeLimitation.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                PCI-DSS applies only to cardholder data security and does not cover non-payment business 
-                information or eliminate all cyber risks.
+                {content.sections.scopeLimitation.content}
               </p>
             </section>
 
-            {/* Section 7 */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                7. Compliance Notice
+                {content.sections.complianceNotice.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Any misuse, credential sharing, or unauthorized access may lead to suspension of access 
-                or regulatory action as per Canara Bank policy.
+                {content.sections.complianceNotice.content}
               </p>
             </section>
+
+            {language !== 'en' && (
+              <p className="text-xs text-muted-foreground italic border-t border-border pt-4">
+                {t.common.disclaimer}
+              </p>
+            )}
           </div>
         </ScrollArea>
 
@@ -124,7 +118,7 @@ export default function PCIDSSModal({ open, onOpenChange }: PCIDSSModalProps) {
             onClick={() => onOpenChange(false)} 
             className="w-full"
           >
-            Close
+            {t.common.close}
           </Button>
         </div>
       </DialogContent>

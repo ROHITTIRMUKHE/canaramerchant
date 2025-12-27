@@ -8,13 +8,16 @@ import FloatingElements from '@/components/landing/FloatingElements';
 import FeaturesSection from '@/components/landing/FeaturesSection';
 import StatsSection from '@/components/landing/StatsSection';
 import ThemeToggle from '@/components/ThemeToggle';
+import LanguageSelector from '@/components/LanguageSelector';
 import PCIDSSModal from '@/components/landing/PCIDSSModal';
 import PrivacyPolicyModal from '@/components/landing/PrivacyPolicyModal';
 import TermsOfServiceModal from '@/components/landing/TermsOfServiceModal';
 import ContactSupportModal from '@/components/landing/ContactSupportModal';
 import canaraBankLogo from '@/assets/canara-bank-logo.png';
+import { useLanguage } from '@/lib/i18n';
 
 export default function Landing() {
+  const { t } = useLanguage();
   const [pciModalOpen, setPciModalOpen] = useState(false);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [termsModalOpen, setTermsModalOpen] = useState(false);
@@ -47,16 +50,18 @@ export default function Landing() {
             />
             <div className="hidden sm:block">
               <p className="text-sm font-bold bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(280,80%,60%)] to-[hsl(145,65%,50%)] bg-clip-text text-transparent tracking-wide">
-                UPI Merchant Solutions
+                {t.landing.upiMerchantSolutions}
               </p>
             </div>
           </motion.div>
 
           <motion.div
+            className="flex items-center gap-2"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
+            <LanguageSelector />
             <ThemeToggle />
           </motion.div>
         </div>
@@ -83,26 +88,25 @@ export default function Landing() {
               >
                 <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[hsl(145,65%,50%)] to-[hsl(198,93%,59%)] animate-pulse" />
                 <span className="bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(280,80%,60%)] to-[hsl(145,65%,50%)] bg-clip-text text-transparent">
-                  India's Trusted Public Sector Bank
+                  {t.landing.trustedBank}
                 </span>
               </motion.div>
 
               <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
-                <span className="text-foreground">Accept </span>
+                <span className="text-foreground">{t.landing.title.accept} </span>
                 <span className="bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(280,80%,60%)] to-[hsl(145,65%,50%)] bg-clip-text text-transparent">
-                  UPI Payments
+                  {t.landing.title.upiPayments}
                 </span>
                 <br />
-                <span className="text-foreground">with </span>
+                <span className="text-foreground">{t.landing.title.with} </span>
                 <span className="bg-gradient-to-r from-[hsl(35,92%,50%)] to-[hsl(198,93%,59%)] bg-clip-text text-transparent">
-                  Instant
+                  {t.landing.title.instant}
                 </span>
-                <span className="text-foreground"> Settlements</span>
+                <span className="text-foreground"> {t.landing.title.settlements}</span>
               </h1>
 
               <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0">
-                Power your business with India's most reliable UPI payment infrastructure. 
-                Real-time settlements, zero downtime, bank-grade security.
+                {t.landing.subtitle}
               </p>
 
               {/* Payment visualization */}
@@ -133,7 +137,7 @@ export default function Landing() {
           transition={{ duration: 2, repeat: Infinity }}
         >
           <div className="flex flex-col items-center gap-2 text-muted-foreground">
-            <span className="text-xs">Scroll to explore</span>
+            <span className="text-xs">{t.landing.scrollToExplore}</span>
             <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/50 flex items-start justify-center p-2">
               <motion.div 
                 className="w-1.5 h-1.5 rounded-full bg-primary"
@@ -154,11 +158,11 @@ export default function Landing() {
         <footer className="py-12 px-6 lg:px-16 border-t border-border">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-              <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
                 <img src={canaraBankLogo} alt="Canara Bank" className="h-10 w-auto" />
                 <div className="text-sm text-muted-foreground">
-                  <p>Canara Bank UPI Merchant Solutions</p>
-                  <p className="text-xs">© 2024 Canara Bank. All Rights Reserved.</p>
+                  <p>{t.landing.upiMerchantSolutions}</p>
+                  <p className="text-xs">{t.landing.copyright}</p>
                 </div>
               </div>
 
@@ -167,25 +171,25 @@ export default function Landing() {
                   onClick={() => setPciModalOpen(true)}
                   className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  PCI-DSS Compliant
+                  {t.landing.pciCompliant}
                 </button>
                 <button
                   onClick={() => setPrivacyModalOpen(true)}
                   className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  Privacy Policy
+                  {t.landing.privacyPolicy}
                 </button>
                 <button
                   onClick={() => setTermsModalOpen(true)}
                   className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  Terms of Service
+                  {t.landing.termsOfService}
                 </button>
                 <button
                   onClick={() => setContactModalOpen(true)}
                   className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  Contact Support
+                  {t.landing.contactSupport}
                 </button>
               </div>
             </div>
