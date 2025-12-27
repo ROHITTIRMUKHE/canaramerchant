@@ -381,6 +381,32 @@ export default function SubMerchantManagement() {
   const [auditCurrentPage, setAuditCurrentPage] = useState(1);
   const auditItemsPerPage = 8;
 
+  // Stats popup state
+  const [showStatsDialog, setShowStatsDialog] = useState(false);
+  const [statsDialogType, setStatsDialogType] = useState<'total' | 'active' | 'suspended' | 'revoked'>('total');
+
+  const getFilteredByStatus = (status: 'total' | 'active' | 'suspended' | 'revoked') => {
+    if (status === 'total') return subMerchants;
+    if (status === 'active') return subMerchants.filter(m => m.status === 'Active');
+    if (status === 'suspended') return subMerchants.filter(m => m.status === 'Suspended');
+    if (status === 'revoked') return subMerchants.filter(m => m.status === 'Revoked');
+    return [];
+  };
+
+  const getStatsDialogTitle = () => {
+    switch (statsDialogType) {
+      case 'total': return 'All Sub-Merchants';
+      case 'active': return 'Active Sub-Merchants';
+      case 'suspended': return 'Suspended Sub-Merchants';
+      case 'revoked': return 'Revoked Sub-Merchants';
+    }
+  };
+
+  const handleStatsCardClick = (type: 'total' | 'active' | 'suspended' | 'revoked') => {
+    setStatsDialogType(type);
+    setShowStatsDialog(true);
+  };
+
   // Create Form State
   const [newSubMerchant, setNewSubMerchant] = useState({
     name: '',
@@ -615,7 +641,10 @@ export default function SubMerchantManagement() {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              <Card>
+              <Card 
+                className="cursor-pointer bg-amber-50/50 dark:bg-amber-900/10 border-amber-200/50 dark:border-amber-700/30 hover:shadow-md transition-shadow"
+                onClick={() => handleStatsCardClick('total')}
+              >
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-primary/10 rounded-lg">
@@ -628,7 +657,10 @@ export default function SubMerchantManagement() {
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              <Card 
+                className="cursor-pointer bg-amber-50/50 dark:bg-amber-900/10 border-amber-200/50 dark:border-amber-700/30 hover:shadow-md transition-shadow"
+                onClick={() => handleStatsCardClick('active')}
+              >
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-emerald-500/10 rounded-lg">
@@ -641,7 +673,10 @@ export default function SubMerchantManagement() {
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              <Card 
+                className="cursor-pointer bg-amber-50/50 dark:bg-amber-900/10 border-amber-200/50 dark:border-amber-700/30 hover:shadow-md transition-shadow"
+                onClick={() => handleStatsCardClick('suspended')}
+              >
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-amber-500/10 rounded-lg">
@@ -654,7 +689,10 @@ export default function SubMerchantManagement() {
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              <Card 
+                className="cursor-pointer bg-amber-50/50 dark:bg-amber-900/10 border-amber-200/50 dark:border-amber-700/30 hover:shadow-md transition-shadow"
+                onClick={() => handleStatsCardClick('revoked')}
+              >
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-destructive/10 rounded-lg">
@@ -1269,6 +1307,60 @@ export default function SubMerchantManagement() {
               {confirmAction.type === 'reactivate' && 'Reactivate'}
               {confirmAction.type === 'revoke' && 'Revoke Permanently'}
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Stats Details Dialog */}
+      <Dialog open={showStatsDialog} onOpenChange={setShowStatsDialog}>
+        <DialogContent className="max-w-3xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle>{getStatsDialogTitle()}</DialogTitle>
+            <DialogDescription>
+              Showing {getFilteredByStatus(statsDialogType).length} sub-merchant(s)
+            </DialogDescription>
+          </DialogHeader>
+          <ScrollArea className="max-h-[50vh]">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Mobile</TableHead>
+                  <TableHead>VPA</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Created</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {getFilteredByStatus(statsDialogType).length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                      No sub-merchants found in this category
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  getFilteredByStatus(statsDialogType).map((merchant) => (
+                    <TableRow key={merchant.id}>
+                      <TableCell className="font-medium">{merchant.id}</TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium">{merchant.tradeName}</p>
+                          <p className="text-xs text-muted-foreground">{merchant.name}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell>{merchant.mobile.slice(0, 4)}****{merchant.mobile.slice(-2)}</TableCell>
+                      <TableCell className="font-mono text-sm">{merchant.vpa}</TableCell>
+                      <TableCell><StatusBadge status={merchant.status} /></TableCell>
+                      <TableCell>{merchant.createdDate}</TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowStatsDialog(false)}>Close</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
