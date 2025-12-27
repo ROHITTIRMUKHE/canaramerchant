@@ -42,6 +42,7 @@ import {
 } from '@/components/ui/pagination';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
+import { colorStyles } from '@/lib/colorSchemes';
 
 // Sample accounts
 const sampleAccounts = [
@@ -554,22 +555,22 @@ export default function Reports() {
             {/* Summary Section */}
             {hasLoaded && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="bg-muted/30">
+                <Card className={`${colorStyles.blue.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-sm text-muted-foreground">Total Transactions</div>
-                    <div className="text-2xl font-bold text-foreground">{summary.transactionCount}</div>
+                    <div className={`text-2xl font-bold ${colorStyles.blue.text}`}>{summary.transactionCount}</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-destructive/5">
+                <Card className="bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-950/30 dark:to-red-900/20 border border-red-200/50 dark:border-red-800/30">
                   <CardContent className="pt-4">
                     <div className="text-sm text-muted-foreground">Total Debit</div>
-                    <div className="text-2xl font-bold text-destructive">{formatCurrency(summary.totalDebit)}</div>
+                    <div className="text-2xl font-bold text-red-600 dark:text-red-400">{formatCurrency(summary.totalDebit)}</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-green-500/5">
+                <Card className={`${colorStyles.green.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-sm text-muted-foreground">Total Credit</div>
-                    <div className="text-2xl font-bold text-green-600">{formatCurrency(summary.totalCredit)}</div>
+                    <div className={`text-2xl font-bold ${colorStyles.green.text}`}>{formatCurrency(summary.totalCredit)}</div>
                   </CardContent>
                 </Card>
               </div>
