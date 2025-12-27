@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Headphones, Mail, Phone, MessageSquare, Clock, ArrowUpRight, AlertCircle } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 interface ContactSupportModalProps {
   open: boolean;
@@ -16,6 +17,9 @@ interface ContactSupportModalProps {
 }
 
 export default function ContactSupportModal({ open, onOpenChange }: ContactSupportModalProps) {
+  const { t, language } = useLanguage();
+  const content = t.support;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[85vh] p-0">
@@ -26,10 +30,10 @@ export default function ContactSupportModal({ open, onOpenChange }: ContactSuppo
             </div>
             <div>
               <DialogTitle className="text-xl font-bold text-foreground">
-                Contact Support
+                {content.title}
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground">
-                Canara Bank – Merchant Dashboard Support
+                {content.subtitle}
               </DialogDescription>
             </div>
           </div>
@@ -37,14 +41,13 @@ export default function ContactSupportModal({ open, onOpenChange }: ContactSuppo
 
         <ScrollArea className="max-h-[60vh] px-6 py-4">
           <div className="space-y-6">
-            {/* Support Channels */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-4 flex items-center gap-2">
                 <Headphones className="h-4 w-4 text-primary" />
-                Support Channels
+                {content.channels.title}
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Reach out to us through any of the following channels
+                {content.channels.description}
               </p>
               
               <div className="space-y-3">
@@ -53,9 +56,9 @@ export default function ContactSupportModal({ open, onOpenChange }: ContactSuppo
                     <Mail className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Email Support</p>
-                    <p className="text-sm text-primary">merchantsupport@canarabank.com</p>
-                    <p className="text-xs text-muted-foreground mt-1">Response within 24 hours</p>
+                    <p className="font-medium text-foreground">{content.channels.email.title}</p>
+                    <p className="text-sm text-primary">{content.channels.email.value}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{content.channels.email.note}</p>
                   </div>
                 </div>
 
@@ -64,9 +67,9 @@ export default function ContactSupportModal({ open, onOpenChange }: ContactSuppo
                     <Phone className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Toll-Free Helpline</p>
-                    <p className="text-sm text-primary">1800-425-0018</p>
-                    <p className="text-xs text-muted-foreground mt-1">Available 24x7</p>
+                    <p className="font-medium text-foreground">{content.channels.phone.title}</p>
+                    <p className="text-sm text-primary">{content.channels.phone.value}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{content.channels.phone.note}</p>
                   </div>
                 </div>
 
@@ -75,54 +78,52 @@ export default function ContactSupportModal({ open, onOpenChange }: ContactSuppo
                     <MessageSquare className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">WhatsApp Support</p>
-                    <p className="text-sm text-primary">+91 80 6883 8888</p>
-                    <p className="text-xs text-muted-foreground mt-1">Quick responses during business hours</p>
+                    <p className="font-medium text-foreground">{content.channels.whatsapp.title}</p>
+                    <p className="text-sm text-primary">{content.channels.whatsapp.value}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{content.channels.whatsapp.note}</p>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Working Hours */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-4 flex items-center gap-2">
                 <Clock className="h-4 w-4 text-primary" />
-                Working Hours
+                {content.workingHours.title}
               </h3>
               
               <div className="space-y-3 p-4 rounded-lg bg-muted/30">
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Monday - Friday</span>
-                  <span className="font-medium text-foreground">9:00 AM - 6:00 PM</span>
+                  <span className="text-muted-foreground">{content.workingHours.weekdays}</span>
+                  <span className="font-medium text-foreground">{content.workingHours.weekdaysTime}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Saturday</span>
-                  <span className="font-medium text-foreground">9:00 AM - 2:00 PM</span>
+                  <span className="text-muted-foreground">{content.workingHours.saturday}</span>
+                  <span className="font-medium text-foreground">{content.workingHours.saturdayTime}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Sunday & Holidays</span>
-                  <span className="font-medium text-destructive">Closed</span>
+                  <span className="text-muted-foreground">{content.workingHours.sunday}</span>
+                  <span className="font-medium text-destructive">{content.workingHours.closed}</span>
                 </div>
               </div>
 
               <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
                 <p className="text-sm text-amber-700 dark:text-amber-400 flex items-center gap-2">
                   <AlertCircle className="h-4 w-4 shrink-0" />
-                  Toll-free helpline is available 24x7 for urgent transaction issues
+                  {content.workingHours.urgentNote}
                 </p>
               </div>
             </section>
 
-            {/* Escalation Matrix */}
             <section>
               <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2">
                 <ArrowUpRight className="h-4 w-4 text-primary" />
-                Escalation Matrix
+                {content.escalation.title}
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
-                For unresolved issues, escalate in this order
+                {content.escalation.description}
               </p>
               
               <div className="space-y-4">
@@ -131,8 +132,8 @@ export default function ContactSupportModal({ open, onOpenChange }: ContactSuppo
                     1
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Level 1: Support Team</p>
-                    <p className="text-xs text-muted-foreground">Response: 24 hours</p>
+                    <p className="font-medium text-foreground">{content.escalation.level1.title}</p>
+                    <p className="text-xs text-muted-foreground">{content.escalation.level1.note}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -140,8 +141,8 @@ export default function ContactSupportModal({ open, onOpenChange }: ContactSuppo
                     2
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Level 2: Senior Support Manager</p>
-                    <p className="text-xs text-muted-foreground">escalation@canarabank.com</p>
+                    <p className="font-medium text-foreground">{content.escalation.level2.title}</p>
+                    <p className="text-xs text-muted-foreground">{content.escalation.level2.note}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -149,12 +150,18 @@ export default function ContactSupportModal({ open, onOpenChange }: ContactSuppo
                     3
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Level 3: Nodal Officer</p>
-                    <p className="text-xs text-muted-foreground">nodalofficer@canarabank.com</p>
+                    <p className="font-medium text-foreground">{content.escalation.level3.title}</p>
+                    <p className="text-xs text-muted-foreground">{content.escalation.level3.note}</p>
                   </div>
                 </div>
               </div>
             </section>
+
+            {language !== 'en' && (
+              <p className="text-xs text-muted-foreground italic border-t border-border pt-4">
+                {t.common.disclaimer}
+              </p>
+            )}
           </div>
         </ScrollArea>
 
@@ -163,7 +170,7 @@ export default function ContactSupportModal({ open, onOpenChange }: ContactSuppo
             onClick={() => onOpenChange(false)} 
             className="w-full"
           >
-            Close
+            {t.common.close}
           </Button>
         </div>
       </DialogContent>

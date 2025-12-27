@@ -35,7 +35,9 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import ThemeToggle from '@/components/ThemeToggle';
+import LanguageSelector from '@/components/LanguageSelector';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useLanguage } from '@/lib/i18n';
 
 // Define all searchable items with modules and features
 const searchableItems = [
@@ -74,6 +76,7 @@ const quickSuggestions = [
 
 export default function DashboardHeader() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -156,7 +159,7 @@ export default function DashboardHeader() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
         <Input
           ref={inputRef}
-          placeholder="Search pages, actions, transactions..."
+          placeholder={t.dashboard.searchPlaceholder}
           className="pl-10 bg-background"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -173,7 +176,7 @@ export default function DashboardHeader() {
               {/* No search query - show suggestions */}
               {!searchQuery.trim() && (
                 <div className="p-2">
-                  <p className="text-xs font-medium text-muted-foreground px-2 py-1.5">Quick Actions</p>
+                  <p className="text-xs font-medium text-muted-foreground px-2 py-1.5">{t.dashboard.quickActions}</p>
                   {quickSuggestions.map((item, index) => (
                     <button
                       key={item.path + index}
@@ -200,8 +203,8 @@ export default function DashboardHeader() {
               {searchQuery.trim() && filteredItems.length === 0 && (
                 <div className="p-4 text-center text-muted-foreground">
                   <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm">No results found for "{searchQuery}"</p>
-                  <p className="text-xs mt-1">Try searching for pages like "Dashboard" or actions like "Create QR"</p>
+                  <p className="text-sm">{t.dashboard.noResults} "{searchQuery}"</p>
+                  <p className="text-xs mt-1">{t.dashboard.trySearching}</p>
                 </div>
               )}
 
@@ -212,7 +215,7 @@ export default function DashboardHeader() {
                     <>
                       <p className="text-xs font-medium text-muted-foreground px-2 py-1.5 flex items-center gap-2">
                         <LayoutDashboard className="h-3 w-3" />
-                        Pages
+                        {t.dashboard.pages}
                       </p>
                       {pages.map((item, index) => (
                         <button
@@ -241,7 +244,7 @@ export default function DashboardHeader() {
                     <>
                       <p className="text-xs font-medium text-muted-foreground px-2 py-1.5 mt-2 flex items-center gap-2">
                         <Plus className="h-3 w-3" />
-                        Quick Actions
+                        {t.dashboard.quickActions}
                       </p>
                       {actions.map((item, index) => (
                         <button
@@ -269,11 +272,11 @@ export default function DashboardHeader() {
                   <div className="border-t border-border mt-2 pt-2 px-2 pb-1 flex items-center gap-4 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border">↑↓</kbd>
-                      Navigate
+                      {t.dashboard.navigate}
                     </span>
                     <span className="flex items-center gap-1">
                       <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border">Enter</kbd>
-                      Select
+                      {t.dashboard.select}
                     </span>
                     <span className="flex items-center gap-1">
                       <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border">Esc</kbd>
@@ -289,6 +292,9 @@ export default function DashboardHeader() {
 
       {/* Right Section */}
       <div className="flex items-center gap-4">
+        {/* Language Selector */}
+        <LanguageSelector />
+        
         {/* Theme Toggle */}
         <ThemeToggle />
         
@@ -333,7 +339,7 @@ export default function DashboardHeader() {
                 </AvatarFallback>
               </Avatar>
               <div className="hidden md:flex flex-col items-start">
-                <span className="text-sm font-medium">Merchant Store</span>
+                <span className="text-sm font-medium">{t.dashboard.merchantStore}</span>
                 <span className="text-xs text-muted-foreground">MID: CANARAXXXX1234</span>
               </div>
             </Button>
