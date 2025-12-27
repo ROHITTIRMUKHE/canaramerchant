@@ -97,9 +97,9 @@ export default function LoginCard() {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.5 }}
-      className="w-full max-w-md"
+      className="w-full max-w-[340px] -mt-8"
       style={{
-        transform: `perspective(1000px) rotateY(${normalizedX * 2}deg) rotateX(${normalizedY * -2}deg)`
+        transform: `perspective(1000px) rotateY(${normalizedX * 2}deg) rotateX(${normalizedY * -2}deg)`,
       }}
     >
       {/* Light themed card - forced white theme */}
@@ -108,16 +108,16 @@ export default function LoginCard() {
         <div className="absolute -inset-1 bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(210,100%,50%)] to-[hsl(198,93%,59%)] rounded-3xl blur-xl opacity-15" />
         
         {/* FORCED WHITE CARD - ignores dark mode */}
-        <div className="relative rounded-2xl border border-[hsl(220,13%,85%)] p-8 shadow-xl"
+        <div className="relative rounded-2xl border border-[hsl(220,13%,85%)] p-6 shadow-xl"
           style={{ 
             backgroundColor: '#ffffff',
             boxShadow: '0 10px 40px rgba(0,0,0,0.08), 0 2px 10px rgba(0,0,0,0.04)'
           }}
         >
           {/* Header with Logo */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <motion.div 
-              className="flex items-center justify-center gap-3 mb-4"
+              className="flex items-center justify-center gap-3 mb-3"
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.7, type: 'spring' }}
@@ -125,15 +125,15 @@ export default function LoginCard() {
               <img 
                 src={canaraBankLogo} 
                 alt="Canara Bank" 
-                className="h-14 w-auto object-contain"
+                className="h-12 w-auto object-contain"
               />
             </motion.div>
-            <h2 className="text-xl font-bold" style={{ color: '#1a1a1a' }}>Merchant Login</h2>
-            <p className="text-sm mt-1" style={{ color: '#6b7280' }}>Access your UPI dashboard</p>
+            <h2 className="text-lg font-bold" style={{ color: '#1a1a1a' }}>Merchant Login</h2>
+            <p className="text-xs mt-1" style={{ color: '#6b7280' }}>Access your UPI dashboard</p>
           </div>
 
           {/* Login mode toggle - light themed */}
-          <div className="flex gap-2 p-1 rounded-xl mb-6" style={{ backgroundColor: '#f3f4f6' }}>
+          <div className="flex gap-2 p-1 rounded-xl mb-4" style={{ backgroundColor: '#f3f4f6' }}>
             {(['password', 'otp'] as const).map((m) => (
               <button
                 key={m}
@@ -156,7 +156,7 @@ export default function LoginCard() {
           </div>
 
           {/* Mobile input */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="space-y-2">
               <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>Mobile Number</Label>
               <div className="relative">
@@ -322,7 +322,7 @@ export default function LoginCard() {
           </div>
 
           {/* Security footer - light themed */}
-          <div className="mt-6 pt-6" style={{ borderTop: '1px solid #e5e7eb' }}>
+          <div className="mt-4 pt-4" style={{ borderTop: '1px solid #e5e7eb' }}>
             <div className="flex items-center justify-center gap-2 text-xs" style={{ color: '#6b7280' }}>
               <Shield className="h-4 w-4" style={{ color: 'hsl(145,65%,40%)' }} />
               <span>256-bit SSL Encrypted • NPCI Compliant • PCI DSS Certified</span>
@@ -332,7 +332,7 @@ export default function LoginCard() {
       </div>
 
       {/* Copyright - dark text for visibility */}
-      <p className="text-center text-xs mt-6" style={{ color: '#6b7280' }}>
+      <p className="text-center text-xs mt-4" style={{ color: '#6b7280' }}>
         © 2024 Canara Bank. All Rights Reserved.
       </p>
     </motion.div>
