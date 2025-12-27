@@ -227,4 +227,108 @@ export interface Translations {
       merchantPortal: string;
     };
   };
+  // Page-specific translations
+  pages: {
+    qrManagement: {
+      title: string;
+      subtitle: string;
+      configureQr: string;
+      selectMerchant: string;
+      mainMerchant: string;
+      subMerchant: string;
+      qrType: string;
+      staticQr: string;
+      dynamicQr: string;
+      staticQrDesc: string;
+      dynamicQrDesc: string;
+      transactionAmount: string;
+      enterAmount: string;
+      generateQr: string;
+      generating: string;
+      downloadQr: string;
+      shareQr: string;
+      qrGenerated: string;
+    };
+    transactions: {
+      title: string;
+      subtitle: string;
+      filters: string;
+      merchantUpi: string;
+      duration: string;
+      status: string;
+      search: string;
+      clearFilters: string;
+      export: string;
+      transactionId: string;
+      dateTime: string;
+      amount: string;
+      payerVpa: string;
+      rrn: string;
+      noTransactions: string;
+    };
+    reports: {
+      title: string;
+      subtitle: string;
+      accountStatement: string;
+      statementSearch: string;
+      accountNumber: string;
+      fromDate: string;
+      toDate: string;
+      clear: string;
+      submit: string;
+      download: string;
+      allTransactions: string;
+      withdrawals: string;
+      deposits: string;
+      totalDebit: string;
+      totalCredit: string;
+      transactionCount: string;
+    };
+    profileSettings: {
+      title: string;
+      subtitle: string;
+      profileInfo: string;
+      bankDetails: string;
+      apiIntegration: string;
+      securityPreferences: string;
+      merchantBasicInfo: string;
+      merchantIdentifiers: string;
+      contactInfo: string;
+      businessAddress: string;
+      settlementAccount: string;
+      kycDetails: string;
+    };
+    settlements: {
+      title: string;
+      subtitle: string;
+      businessSummary: string;
+      downloads: string;
+      auditTrail: string;
+      filterOptions: string;
+      subMerchant: string;
+      dateRange: string;
+      viewSummary: string;
+      clearFilters: string;
+      totalAmount: string;
+      totalTransactions: string;
+      settlementDays: string;
+    };
+    refundsDisputes: {
+      title: string;
+      subtitle: string;
+      refunds: string;
+      disputes: string;
+      initiateRefund: string;
+      raiseDispute: string;
+      refundId: string;
+      disputeId: string;
+      status: string;
+      amount: string;
+      reason: string;
+      totalRefunds: string;
+      completedRefunds: string;
+      pendingRefunds: string;
+      failedRefunds: string;
+    };
+  };
 }
