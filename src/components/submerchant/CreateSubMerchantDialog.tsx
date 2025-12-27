@@ -432,8 +432,8 @@ export default function CreateSubMerchantDialog({
                 </DialogDescription>
               </DialogHeader>
 
-              <ScrollArea className="max-h-[calc(90vh-180px)] px-6">
-                <div className="py-6 space-y-8">
+              <ScrollArea className="h-[calc(90vh-180px)] overflow-y-auto">
+                <div className="py-6 px-6 space-y-8">
                   {/* Section 1: Entity Details */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 text-primary">
