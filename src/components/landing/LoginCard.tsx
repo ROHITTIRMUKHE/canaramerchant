@@ -102,12 +102,18 @@ export default function LoginCard() {
         transform: `perspective(1000px) rotateY(${normalizedX * 2}deg) rotateX(${normalizedY * -2}deg)`
       }}
     >
-      {/* Glassmorphism card */}
+      {/* Light themed card - forced white theme */}
       <div className="relative">
-        {/* Card glow effect */}
-        <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-3xl blur-xl opacity-20" />
+        {/* Card glow effect - subtle blue */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-[hsl(198,93%,59%)] via-[hsl(210,100%,50%)] to-[hsl(198,93%,59%)] rounded-3xl blur-xl opacity-15" />
         
-        <div className="relative bg-card/90 backdrop-blur-xl rounded-2xl border border-border p-8 shadow-2xl">
+        {/* FORCED WHITE CARD - ignores dark mode */}
+        <div className="relative rounded-2xl border border-[hsl(220,13%,85%)] p-8 shadow-xl"
+          style={{ 
+            backgroundColor: '#ffffff',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.08), 0 2px 10px rgba(0,0,0,0.04)'
+          }}
+        >
           {/* Header with Logo */}
           <div className="text-center mb-8">
             <motion.div 
@@ -122,12 +128,12 @@ export default function LoginCard() {
                 className="h-14 w-auto object-contain"
               />
             </motion.div>
-            <h2 className="text-xl font-bold text-foreground">Merchant Login</h2>
-            <p className="text-sm text-muted-foreground mt-1">Access your UPI dashboard</p>
+            <h2 className="text-xl font-bold" style={{ color: '#1a1a1a' }}>Merchant Login</h2>
+            <p className="text-sm mt-1" style={{ color: '#6b7280' }}>Access your UPI dashboard</p>
           </div>
 
-          {/* Login mode toggle */}
-          <div className="flex gap-2 p-1 bg-secondary rounded-xl mb-6">
+          {/* Login mode toggle - light themed */}
+          <div className="flex gap-2 p-1 rounded-xl mb-6" style={{ backgroundColor: '#f3f4f6' }}>
             {(['password', 'otp'] as const).map((m) => (
               <button
                 key={m}
@@ -135,9 +141,13 @@ export default function LoginCard() {
                 className={cn(
                   "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all",
                   mode === m 
-                    ? "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground" 
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "shadow-md" 
+                    : ""
                 )}
+                style={{
+                  backgroundColor: mode === m ? 'hsl(198,93%,59%)' : 'transparent',
+                  color: mode === m ? '#ffffff' : '#374151',
+                }}
               >
                 {m === 'password' ? <KeyRound className="w-4 h-4" /> : <Fingerprint className="w-4 h-4" />}
                 {m === 'password' ? 'Password' : 'OTP'}
@@ -148,18 +158,25 @@ export default function LoginCard() {
           {/* Mobile input */}
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-muted-foreground text-sm">Mobile Number</Label>
+              <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>Mobile Number</Label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-medium">+91</span>
-                <Phone className="absolute left-12 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold" style={{ color: '#374151' }}>+91</span>
+                <Phone className="absolute left-12 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: '#6b7280' }} />
+                <input
                   type="tel"
                   placeholder="Enter 10-digit number"
-                  className="pl-20 h-12 bg-secondary border-border text-foreground text-lg font-medium placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+                  className="w-full pl-20 h-12 rounded-lg text-lg font-bold outline-none transition-all"
+                  style={{
+                    backgroundColor: '#ffffff',
+                    border: '2px solid #d1d5db',
+                    color: '#000000',
+                  }}
                   maxLength={10}
                   value={mobileNumber}
                   onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
                   disabled={mode === 'otp' && otpSent}
+                  onFocus={(e) => e.target.style.borderColor = 'hsl(198,93%,59%)'}
+                  onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                 />
               </div>
             </div>
@@ -173,26 +190,34 @@ export default function LoginCard() {
                   exit={{ opacity: 0, height: 0 }}
                   className="space-y-2"
                 >
-                  <Label className="text-muted-foreground text-sm">Password</Label>
+                  <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>Password</Label>
                   <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: '#6b7280' }} />
+                    <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter password"
-                      className="pl-12 pr-12 h-12 bg-secondary border-border text-foreground text-lg font-medium placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20"
+                      className="w-full pl-12 pr-12 h-12 rounded-lg text-lg font-bold outline-none transition-all"
+                      style={{
+                        backgroundColor: '#ffffff',
+                        border: '2px solid #d1d5db',
+                        color: '#000000',
+                      }}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      onFocus={(e) => e.target.style.borderColor = 'hsl(198,93%,59%)'}
+                      onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors hover:opacity-70"
+                      style={{ color: '#6b7280' }}
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                   <div className="flex justify-end">
-                    <button className="text-xs text-primary hover:underline">Forgot Password?</button>
+                    <button className="text-xs font-medium hover:underline" style={{ color: 'hsl(198,93%,45%)' }}>Forgot Password?</button>
                   </div>
                 </motion.div>
               ) : (
@@ -206,21 +231,30 @@ export default function LoginCard() {
                   {!otpSent ? (
                     <Button
                       onClick={handleSendOtp}
-                      variant="outline"
-                      className="w-full h-12 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+                      className="w-full h-12 font-semibold transition-all"
+                      style={{
+                        backgroundColor: '#ffffff',
+                        border: '2px solid hsl(198,93%,59%)',
+                        color: 'hsl(198,93%,45%)',
+                      }}
                     >
                       Send OTP
                     </Button>
                   ) : (
                     <>
-                      <Label className="text-muted-foreground text-sm">Enter OTP</Label>
+                      <Label className="text-sm font-medium" style={{ color: '#1f2937' }}>Enter OTP</Label>
                       <div className="flex gap-2">
                         {Array.from({ length: 6 }).map((_, i) => (
-                          <Input
+                          <input
                             key={i}
                             type="text"
                             maxLength={1}
-                            className="w-12 h-12 text-center text-xl font-bold bg-secondary border-border text-foreground focus:border-primary focus:ring-primary/20"
+                            className="w-12 h-12 text-center text-xl font-bold rounded-lg outline-none transition-all"
+                            style={{
+                              backgroundColor: '#ffffff',
+                              border: '2px solid #d1d5db',
+                              color: '#000000',
+                            }}
                             value={otp[i] || ''}
                             onChange={(e) => {
                               const val = e.target.value.replace(/\D/g, '');
@@ -231,19 +265,22 @@ export default function LoginCard() {
                                 (e.target.nextElementSibling as HTMLInputElement).focus();
                               }
                             }}
+                            onFocus={(e) => e.target.style.borderColor = 'hsl(198,93%,59%)'}
+                            onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                           />
                         ))}
                       </div>
                       <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">
+                        <span style={{ color: '#6b7280' }}>
                           {countdown > 0 ? `Resend in ${countdown}s` : ''}
                         </span>
                         <button
                           onClick={handleSendOtp}
                           disabled={countdown > 0}
-                          className={cn(
-                            countdown > 0 ? 'text-muted-foreground' : 'text-primary hover:underline'
-                          )}
+                          className="font-medium hover:underline"
+                          style={{ 
+                            color: countdown > 0 ? '#9ca3af' : 'hsl(198,93%,45%)'
+                          }}
                         >
                           Resend OTP
                         </button>
@@ -254,7 +291,7 @@ export default function LoginCard() {
               )}
             </AnimatePresence>
 
-            {/* Login button */}
+            {/* Login button - Primary Blue */}
             <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -262,11 +299,16 @@ export default function LoginCard() {
               <Button
                 onClick={handleLogin}
                 disabled={isLoading || (mode === 'otp' && !otpSent)}
-                className="w-full h-12 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+                className="w-full h-12 font-semibold transition-all shadow-lg disabled:opacity-50"
+                style={{
+                  background: 'linear-gradient(135deg, hsl(198,93%,50%) 0%, hsl(210,100%,45%) 100%)',
+                  color: '#ffffff',
+                  boxShadow: '0 4px 14px rgba(0,136,204,0.35)',
+                }}
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     Authenticating...
                   </div>
                 ) : (
@@ -279,18 +321,18 @@ export default function LoginCard() {
             </motion.div>
           </div>
 
-          {/* Security footer */}
-          <div className="mt-6 pt-6 border-t border-border">
-            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-              <Shield className="h-4 w-4 text-chart-4" />
+          {/* Security footer - light themed */}
+          <div className="mt-6 pt-6" style={{ borderTop: '1px solid #e5e7eb' }}>
+            <div className="flex items-center justify-center gap-2 text-xs" style={{ color: '#6b7280' }}>
+              <Shield className="h-4 w-4" style={{ color: 'hsl(145,65%,40%)' }} />
               <span>256-bit SSL Encrypted • NPCI Compliant • PCI DSS Certified</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Copyright */}
-      <p className="text-center text-xs text-muted-foreground mt-6">
+      {/* Copyright - dark text for visibility */}
+      <p className="text-center text-xs mt-6" style={{ color: '#6b7280' }}>
         © 2024 Canara Bank. All Rights Reserved.
       </p>
     </motion.div>
