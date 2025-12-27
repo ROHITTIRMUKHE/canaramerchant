@@ -64,6 +64,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from '@/hooks/use-toast';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
+import { colorStyles } from '@/lib/colorSchemes';
 
 // Sample refund data
 const sampleRefunds = [
@@ -488,42 +489,42 @@ const RefundsDisputes = () => {
             <TabsContent value="refunds" className="space-y-6">
               {/* Refund Stats */}
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <Card>
+                <Card className={`${colorStyles.blue.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-foreground">{refundStats.total}</p>
+                      <p className={`text-2xl font-bold ${colorStyles.blue.text}`}>{refundStats.total}</p>
                       <p className="text-sm text-muted-foreground">Total Refunds</p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className={`${colorStyles.green.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-green-600">{refundStats.completed}</p>
+                      <p className={`text-2xl font-bold ${colorStyles.green.text}`}>{refundStats.completed}</p>
                       <p className="text-sm text-muted-foreground">Completed</p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className={`${colorStyles.yellow.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-yellow-600">{refundStats.pending}</p>
+                      <p className={`text-2xl font-bold ${colorStyles.yellow.text}`}>{refundStats.pending}</p>
                       <p className="text-sm text-muted-foreground">Pending</p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-950/30 dark:to-red-900/20 border border-red-200/50 dark:border-red-800/30">
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-red-600">{refundStats.failed}</p>
+                      <p className="text-2xl font-bold text-red-600 dark:text-red-400">{refundStats.failed}</p>
                       <p className="text-sm text-muted-foreground">Failed</p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className={`${colorStyles.purple.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-primary">₹{refundStats.totalAmount.toLocaleString()}</p>
+                      <p className={`text-2xl font-bold ${colorStyles.purple.text}`}>₹{refundStats.totalAmount.toLocaleString()}</p>
                       <p className="text-sm text-muted-foreground">Total Refunded</p>
                     </div>
                   </CardContent>
@@ -651,42 +652,42 @@ const RefundsDisputes = () => {
             <TabsContent value="disputes" className="space-y-6">
               {/* Dispute Stats */}
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <Card>
+                <Card className={`${colorStyles.blue.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-foreground">{disputeStats.total}</p>
+                      <p className={`text-2xl font-bold ${colorStyles.blue.text}`}>{disputeStats.total}</p>
                       <p className="text-sm text-muted-foreground">Total Disputes</p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className={`${colorStyles.yellow.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-yellow-600">{disputeStats.open}</p>
+                      <p className={`text-2xl font-bold ${colorStyles.yellow.text}`}>{disputeStats.open}</p>
                       <p className="text-sm text-muted-foreground">Open</p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/30 dark:to-orange-900/20 border border-orange-200/50 dark:border-orange-800/30">
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-orange-600">{disputeStats.awaitingInput}</p>
+                      <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{disputeStats.awaitingInput}</p>
                       <p className="text-sm text-muted-foreground">Awaiting Input</p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className={`${colorStyles.green.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-green-600">{disputeStats.resolved}</p>
+                      <p className={`text-2xl font-bold ${colorStyles.green.text}`}>{disputeStats.resolved}</p>
                       <p className="text-sm text-muted-foreground">Resolved</p>
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className={`${colorStyles.purple.card} border`}>
                   <CardContent className="pt-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-muted-foreground">{disputeStats.closed}</p>
+                      <p className={`text-2xl font-bold ${colorStyles.purple.text}`}>{disputeStats.closed}</p>
                       <p className="text-sm text-muted-foreground">Closed</p>
                     </div>
                   </CardContent>
