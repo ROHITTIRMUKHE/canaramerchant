@@ -38,20 +38,20 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 const searchableItems = [
   // Pages/Modules
   { type: 'page', label: 'Dashboard', description: 'View overview and statistics', path: '/dashboard', icon: LayoutDashboard, keywords: ['home', 'overview', 'stats', 'main'] },
-  { type: 'page', label: 'QR Management', description: 'Create and manage QR codes', path: '/dashboard/qr-management', icon: QrCode, keywords: ['qr', 'code', 'generate', 'scan'] },
-  { type: 'page', label: 'Sub-Merchant Management', description: 'Manage sub-merchants', path: '/dashboard/sub-merchants', icon: Users, keywords: ['merchant', 'sub', 'partner', 'vendor'] },
+  { type: 'page', label: 'QR Management', description: 'Create and manage QR codes', path: '/dashboard/qr', icon: QrCode, keywords: ['qr', 'code', 'generate', 'scan'] },
+  { type: 'page', label: 'Sub-Merchant Management', description: 'Manage sub-merchants', path: '/dashboard/submerchants', icon: Users, keywords: ['merchant', 'sub', 'partner', 'vendor'] },
   { type: 'page', label: 'Transaction Summary', description: 'View all transactions', path: '/dashboard/transactions', icon: FileText, keywords: ['transaction', 'payment', 'history', 'txn'] },
   { type: 'page', label: 'Settlements', description: 'Settlement and business overview', path: '/dashboard/settlements', icon: Wallet, keywords: ['settlement', 'payout', 'bank', 'credit'] },
-  { type: 'page', label: 'Refunds & Disputes', description: 'Manage refunds and disputes', path: '/dashboard/refunds-disputes', icon: RefreshCcw, keywords: ['refund', 'dispute', 'chargeback', 'return'] },
+  { type: 'page', label: 'Refunds & Disputes', description: 'Manage refunds and disputes', path: '/dashboard/refunds', icon: RefreshCcw, keywords: ['refund', 'dispute', 'chargeback', 'return'] },
   { type: 'page', label: 'Reports', description: 'Generate and download reports', path: '/dashboard/reports', icon: TrendingUp, keywords: ['report', 'analytics', 'export', 'download'] },
   { type: 'page', label: 'Support', description: 'Get help and support', path: '/dashboard/support', icon: HelpCircle, keywords: ['help', 'support', 'contact', 'ticket'] },
-  { type: 'page', label: 'Profile Settings', description: 'Manage your profile', path: '/dashboard/profile', icon: Settings, keywords: ['profile', 'settings', 'account', 'password'] },
+  { type: 'page', label: 'Profile Settings', description: 'Manage your profile', path: '/dashboard/settings', icon: Settings, keywords: ['profile', 'settings', 'account', 'password'] },
   
   // Quick Actions/Features
-  { type: 'action', label: 'Create New QR Code', description: 'Generate a new static or dynamic QR', path: '/dashboard/qr-management', icon: Plus, keywords: ['create', 'new', 'qr', 'generate'] },
-  { type: 'action', label: 'Add Sub-Merchant', description: 'Register a new sub-merchant', path: '/dashboard/sub-merchants', icon: Plus, keywords: ['add', 'new', 'sub', 'merchant', 'create'] },
-  { type: 'action', label: 'Initiate Refund', description: 'Process a new refund request', path: '/dashboard/refunds-disputes', icon: RefreshCcw, keywords: ['refund', 'initiate', 'process', 'return'] },
-  { type: 'action', label: 'Raise Dispute', description: 'File a new dispute', path: '/dashboard/refunds-disputes', icon: AlertTriangle, keywords: ['dispute', 'raise', 'file', 'complaint'] },
+  { type: 'action', label: 'Create New QR Code', description: 'Generate a new static or dynamic QR', path: '/dashboard/qr', icon: Plus, keywords: ['create', 'new', 'qr', 'generate'] },
+  { type: 'action', label: 'Add Sub-Merchant', description: 'Register a new sub-merchant', path: '/dashboard/submerchants', icon: Plus, keywords: ['add', 'new', 'sub', 'merchant', 'create'] },
+  { type: 'action', label: 'Initiate Refund', description: 'Process a new refund request', path: '/dashboard/refunds', icon: RefreshCcw, keywords: ['refund', 'initiate', 'process', 'return'] },
+  { type: 'action', label: 'Raise Dispute', description: 'File a new dispute', path: '/dashboard/refunds', icon: AlertTriangle, keywords: ['dispute', 'raise', 'file', 'complaint'] },
   { type: 'action', label: 'Download Settlement Report', description: 'Export settlement data', path: '/dashboard/settlements', icon: Download, keywords: ['download', 'export', 'settlement', 'report'] },
   { type: 'action', label: 'View Business Summary', description: 'Check cumulative business', path: '/dashboard/settlements', icon: Eye, keywords: ['view', 'summary', 'business', 'overview'] },
   { type: 'action', label: 'Check Transaction Status', description: 'Track a specific transaction', path: '/dashboard/transactions', icon: Search, keywords: ['check', 'status', 'transaction', 'track'] },
@@ -62,8 +62,8 @@ const searchableItems = [
 const quickSuggestions = [
   { label: 'View Today\'s Transactions', path: '/dashboard/transactions', icon: FileText },
   { label: 'Check Settlements', path: '/dashboard/settlements', icon: Wallet },
-  { label: 'Manage QR Codes', path: '/dashboard/qr-management', icon: QrCode },
-  { label: 'View Sub-Merchants', path: '/dashboard/sub-merchants', icon: Users },
+  { label: 'Manage QR Codes', path: '/dashboard/qr', icon: QrCode },
+  { label: 'View Sub-Merchants', path: '/dashboard/submerchants', icon: Users },
 ];
 
 export default function DashboardHeader() {
