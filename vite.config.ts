@@ -4,8 +4,6 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // IMPORTANT: This must match your GitHub repository
-  base: "/canaramerchant/",
   
   server: {
     host: "::",
